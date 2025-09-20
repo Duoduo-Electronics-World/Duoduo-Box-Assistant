@@ -1,39 +1,49 @@
 # 多多盒子
 
 #### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+![输入图片说明](%E5%9B%BE%E7%89%87/J%20link%20RTT%E4%B8%BB%E9%A1%B5%E9%9D%A2image.png)
+
 
 #### 软件架构
 软件架构说明
 
 
+
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+显示波形图发送数据格式,最大显示10个通道数据。
+"ch:1,2,3,4,5,6,7,8,9,10\n"
+数字1表示通道1的数据
+数字2表示通道2的数据
+数字3表示通道3的数据
+数字4表示通道4的数据
+数字5表示通道5的数据
+数字6表示通道6的数据
+数字7表示通道7的数据
+数字8表示通道8的数据
+数字9表示通道9的数据
+数字10表示通道10的数据
+一帧数据后面一定要加换行符‌，否则图标显示不出来。
+例如显示通道1波形图：
+"ch:65\n"
+"ch:70\n"
+"ch:70\n"
+例如显示通道1和通道2波形图：
+"ch:65,30\n"
+"ch:60,40\n"
+"ch:80,50\n"
+
 
 #### 参与贡献
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+mmc
+
 
 
 #### 特技
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+
