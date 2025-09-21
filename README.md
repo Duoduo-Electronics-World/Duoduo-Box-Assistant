@@ -20,6 +20,15 @@
 
 #### 使用说明
 
+#### J-link使用说明
+
+如果使用j-link 则安装J-link驱动  
+![输入图片说明](%E5%9B%BE%E7%89%87/%E5%AE%89%E8%A3%85j-link%E9%A9%B1%E5%8A%A8image.png)  
+![输入图片说明](%E5%9B%BE%E7%89%87/%E6%89%A7%E8%A1%8C%E5%AE%89%E8%A3%85j-link%E9%A9%B1%E5%8A%A8image.png)  
+![输入图片说明](%E5%9B%BE%E7%89%87/%E7%A7%BB%E6%A4%8DRTT%E6%BA%90%E6%96%87%E4%BB%B6image.png)  
+![输入图片说明](%E5%9B%BE%E7%89%87/%E4%BD%BF%E7%94%A8RTT%E6%89%93%E5%8D%B0%E8%BE%93%E5%87%BA%E4%BF%A1%E6%81%AFimage.png)  
+![输入图片说明](%E5%9B%BE%E7%89%87/%E5%A2%9E%E5%8A%A0%E5%A4%B4%E6%96%87%E4%BB%B6image.png)
+
 显示波形图发送数据格式,最大显示10个通道数据。  
 "ch:1,2,3,4,5,6,7,8,9,10\n"  
 数字1表示通道1的数据  
