@@ -61,6 +61,7 @@ mmc
 
 
 
-#### 特技
+#### 获取最新版本
+网址：https://gitee.com/momingchuan/duo-duo-box  
 
 
