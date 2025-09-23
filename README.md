@@ -46,18 +46,24 @@
 "ch:65\n"  
 "ch:70\n"  
 "ch:70\n"  
-
-![输入图片说明](%E5%9B%BE%E7%89%87/%E6%89%93%E5%8D%B0%E9%80%9A%E9%81%931image.png)  
+  SEGGER_RTT_WriteString(0, "ch:65\n");  
+  SEGGER_RTT_WriteString(0, "ch:70\n");  
+  SEGGER_RTT_WriteString(0, "ch:80\n");  
 
 例如显示通道1和通道2波形图：  
 "ch:65,30\n"  
 "ch:60,40\n"  
 "ch:80,50\n"  
-![输入图片说明](%E5%9B%BE%E7%89%87/%E6%89%93%E5%8D%B0%E4%B8%A4%E4%B8%AA%E9%80%9A%E9%81%93%E6%95%B0%E6%8D%AEimage.png)  
+
+  SEGGER_RTT_WriteString(0, "ch:65,30\n");  
+  SEGGER_RTT_WriteString(0, "ch:60,40\n");  
+  SEGGER_RTT_WriteString(0, "ch:80,50\n");  
+
+#### 使用技巧  
+![输入图片说明](%E5%9B%BE%E7%89%87/%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7image.png)  
 
 #### 参与贡献
 
-mmc
 
 
 
