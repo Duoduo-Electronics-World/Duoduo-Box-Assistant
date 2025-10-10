@@ -10,7 +10,7 @@
         "baud_rate": 2000,
         "max_address": "0x20010000",
         "min_address": "0x20000000",
-        "reset_on_connect": false,
+        "reset_on_connect": true,
         "target_device": "stm32f103c8"
     },
     "serial_settings": {
