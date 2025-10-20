@@ -1,6 +1,7 @@
 {
     "display_settings": {
         "hex_mode": false,
+        "language": "zh_CN",
         "refresh_interval": 50,
         "show_timestamp": false,
         "upper_limit_buffer": 50000
