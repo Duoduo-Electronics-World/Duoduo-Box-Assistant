@@ -45,13 +45,14 @@
 一帧数据后面一定要加换行符‌，否则图标显示不出来。  
 例如显示通道1波形图：  
 "ch:65\n"  
-"ch:70\n"  
-"ch:70\n"  
+"ch:71\n"  
+"ch:80\n"  
 
 ```
-SEGGER_RTT_WriteString(0, "ch:65\n");  
-SEGGER_RTT_WriteString(0, "ch:70\n");  
-SEGGER_RTT_WriteString(0, "ch:80\n");
+int buffer[3]={65,71,80};
+SEGGER_RTT_printf(0, "ch:%d\n",buffer[0]);  
+SEGGER_RTT_printf(0, "ch:%d\n",buffer[1]);  
+SEGGER_RTT_printf(0, "ch:%d\n",buffer[2]);  
 ```
 
 
@@ -62,9 +63,11 @@ SEGGER_RTT_WriteString(0, "ch:80\n");
 
 
 ```
-SEGGER_RTT_WriteString(0, "ch:65,30\n");  
-SEGGER_RTT_WriteString(0, "ch:60,40\n");  
-SEGGER_RTT_WriteString(0, "ch:80,50\n");
+int buffer1[3]={65,60,80};
+int buffer2[3]={30,40,50};
+SEGGER_RTT_printf(0, "ch:%d,%d\n",buffer1[0],buffer2[0]);  
+SEGGER_RTT_printf(0, "ch:%d,%d\n",buffer1[1],buffer2[1]);  
+SEGGER_RTT_printf(0, "ch:%d,%d\n",buffer1[2],buffer2[2]);  
 ```
 
 
