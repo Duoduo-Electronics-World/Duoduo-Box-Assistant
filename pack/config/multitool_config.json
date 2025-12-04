@@ -1,0 +1,26 @@
+{
+    "display_settings": {
+        "hex_mode": false,
+        "language": "en_US",
+        "refresh_interval": 50,
+        "show_timestamp": false,
+        "upper_limit_buffer": 50000
+    },
+    "jlink_settings": {
+        "address_mode": "auto",
+        "baud_rate": 2000,
+        "max_address": "0x20010000",
+        "min_address": "0x20000000",
+        "reset_on_connect": false,
+        "target_device": "stm32f103c8"
+    },
+    "serial_settings": {
+        "baud_rate": 115200,
+        "data_bits": 8,
+        "flow_control": "none",
+        "parity": "none",
+        "port_name": "COM1",
+        "stop_bits": 1
+    },
+    "version": "1.0"
+}
