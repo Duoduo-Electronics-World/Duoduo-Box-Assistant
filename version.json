@@ -1,6 +1,6 @@
 {
-    "version": "1.0.6",
-    "version_code": 106,
+    "version": "1.0.7",
+    "version_code": 107,
     "download_url": "https://gitee.com/momingchuan/duo-duo-box",
     "release_notes": "1. 修复了已知问题\n 2. 优化了性能\n 3. 新增自动更新功能",
     "release_date": "2025-01-20"
