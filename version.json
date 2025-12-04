@@ -1,6 +1,6 @@
 {
-    "version": "1.0.7",
-    "version_code": 107,
+    "version": "1.0.8",
+    "version_code": 108,
     "download_url": "https://gitee.com/momingchuan/duo-duo-box",
     "release_notes": "1. 增加J_link同时多个设备连接\n 2. 多线程数据处理，提高软件的流畅度 \n 3. 优化调节滑块和图表的X轴同步 4. 增加J_link发送功能 \n",
     "release_date": "2025-12-4"
