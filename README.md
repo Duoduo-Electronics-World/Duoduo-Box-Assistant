@@ -70,7 +70,7 @@ $\color{#0000FF}{
 
 #### J-link使用说明  
 
-如果使用j-link 则安装J-link驱动，如果已经安装过J-link驱动了则不用安装，但是为了避免出现可能未知的错误问题，还是强烈建议安装此版本的J-link驱动程序。  
+如果使用j-link 则安装J-link驱动，如果已经安装过J-link驱动了则不用安装，但是为了避免出现可能未知的错误问题，还是 $\color{#FF0000}{强烈}$ 建议安装此版本的J-link驱动程序。  
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E5%AE%89%E8%A3%85j-link%E9%A9%B1%E5%8A%A8image.png)  
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E7%82%B9%E5%87%BB%E5%AE%89%E8%A3%85J-linkimage.png)
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E7%A7%BB%E6%A4%8D%E5%88%B0%E8%87%AA%E5%B7%B1%E7%9A%84keil%E5%B7%A5%E7%A8%8Bimage.png)
