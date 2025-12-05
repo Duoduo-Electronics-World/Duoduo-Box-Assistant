@@ -72,7 +72,8 @@ $\color{#0000FF}{
 
 如果使用j-link 则安装J-link驱动，如果已经安装过J-link驱动了则不用安装，但是为了避免出现可能未知的错误问题，还是 $\color{#FF0000}{强烈}$ 建议安装此版本的J-link驱动程序。  
 
-![输入图片说明](%E5%9B%BE%E7%89%87/%E5%AE%89%E8%A3%85J-link%E9%A9%B1%E5%8A%A811zon_created-GIF%20(1).gif)  
+![输入图片说明](%E5%9B%BE%E7%89%87/%E5%AE%89%E8%A3%85J-link%E9%A9%B1%E5%8A%A811zon_created-GIF%20(4).gif)
+
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E7%A7%BB%E6%A4%8D%E5%88%B0%E8%87%AA%E5%B7%B1%E7%9A%84keil%E5%B7%A5%E7%A8%8Bimage.png)  
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E5%A2%9E%E5%8A%A0%E5%A4%B4%E6%96%87%E4%BB%B6image.png)  
 ![输入图片说明](%E5%9B%BE%E7%89%87/Keil%E5%B7%A5%E7%A8%8B%E4%BB%A3%E7%A0%81%E9%85%8D%E7%BD%AEimage.png)  
