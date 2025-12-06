@@ -70,7 +70,7 @@ $\color{#0000FF}{
 
 #### J-link使用说明  
 
-如果使用j-link 则安装J-link驱动，如果已经安装过J-link驱动了则不用安装，但是为了避免出现可能未知的错误问题，还是 $\color{#FF0000}{强烈}$ 建议安装此版本的J-link驱动程序。  
+如果使用j-link 则安装J-link驱动，如果已经安装过J-link驱动了则不用安装，但是为了避免可能 $\color{#FF9933}{出现未知的错误问题}$ ，还是 $\color{#FF0000}{强烈}$ 建议安装此版本的J-link驱动程序。  
 
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E5%AE%89%E8%A3%85J-link%E9%A9%B1%E5%8A%A811zon_created-GIF%20(4).gif)
 
@@ -118,7 +118,8 @@ SEGGER_RTT_printf(0, "ch:%d,%d\n",buffer1[0],buffer2[0]);
 SEGGER_RTT_printf(0, "ch:%d,%d\n",buffer1[1],buffer2[1]);  
 SEGGER_RTT_printf(0, "ch:%d,%d\n",buffer1[2],buffer2[2]);  
 ```
-
+> Note:
+> 1. **RTT目前只支持0通道，不支持其他通道**。这意味着你只能调用SEGGER_RTT_printf(0, "test\n")发送数据，而不能调用SEGGER_RTT_printf(1,"test\n")去发送数据。  
 
 ## 使用技巧  
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7image.png)  
