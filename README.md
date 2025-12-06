@@ -78,6 +78,37 @@ $\color{#0000FF}{
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E5%A2%9E%E5%8A%A0%E5%A4%B4%E6%96%87%E4%BB%B6image.png)  
 ![输入图片说明](%E5%9B%BE%E7%89%87/Keil%E5%B7%A5%E7%A8%8B%E4%BB%A3%E7%A0%81%E9%85%8D%E7%BD%AEimage.png)  
 
+#### 上行/下行缓冲区配置
+> Note:  
+>  如何手动配置RTT上行/下行缓冲区？  
+>  核心函数：SEGGER_RTT_ConfigUpBuffer(unsigned BufferIndex, const char* sName, void* pBuffer, unsigned BufferSize, unsigned Flags)  
+>  和 SEGGER_RTT_ConfigDownBuffer(unsigned BufferIndex, const char* sName, void* pBuffer, unsigned BufferSize, unsigned Flags)  
+>  用途：用于创建自定义的上行（MCU到调试器）或下行（调试器到MCU）通道，替换默认的0号通道。  
+>  配置步骤：  
+>  定义缓冲区：声明静态字符数组作为数据缓冲区。  
+>  调用配置函数：在初始化阶段配置缓冲区。  
+>  指定通道参数：  
+>  BufferIndex：通道索引（0为默认通道，1及以上为用户自定义通道）。  
+>  sName：通道标识名。  
+>  pBuffer：缓冲区地址。  
+>  BufferSize：缓冲区大小。  
+>  Mode：缓冲模式（如SEGGER_RTT_MODE_NO_BLOCK_SKIP非阻塞跳过模式）。  
+>  $\color{#663366}{RTT缓冲区大小的根本限制}$ 
+>  $\color{#FF0000}{核心原则：RTT缓冲区直接占用MCU的RAM，调试器只是读取该内存区域。因此，缓冲区最大尺寸的硬性上限是您愿意且能够从MCU总RAM中划拨出的空间。}$   
+>  MCU型号总RAM容量  
+>  建议的RTT缓冲区大小  
+>  STM32G473​ 128 KB SRAM  
+>  可轻松配置 32KB 或 64KB  
+>  STM32F407​ 192 KB RAM  
+>  通常可用 64KB ~ 100KB  
+>  STM32H743​ 512 KB DTCM RAM  
+>  可配置高达几百KB  
+>  **总结与使用建议**  
+>  配置流程：先根据您的调试输出数据量需求。  
+>  尺寸规划：在规划缓冲区大小时，必须首要考虑硬件限制，即根据您的MCU型号和应用程序已占用的RAM，评估剩余可用空间，并据此设置一个合理的缓冲区大小，避免导致系统内存不足。  
+
+
+
 #### 波形图帧格式    
 显示波形图发送数据格式,最大显示10个通道数据。  
 "ch:1,2,3,4,5,6,7,8,9,10\n"  
