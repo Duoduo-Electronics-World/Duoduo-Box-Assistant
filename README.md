@@ -156,7 +156,7 @@ SEGGER_RTT_printf(0, "ch:%d,%d\n",buffer1[2],buffer2[2]);
 > 1. **RTT目前只支持0通道，不支持其他通道**。这意味着你只能调用SEGGER_RTT_printf(0, "test\n")发送数据，而不能调用SEGGER_RTT_printf(1,"test\n")去发送数据。  
 
 ## 使用技巧  
-![输入图片说明](%E5%9B%BE%E7%89%87/%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7image.png)  
+![输入图片说明](%E5%9B%BE%E7%89%87/%E6%89%8B%E5%8A%A8%E8%BF%9E%E6%8E%A5image.png)
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E7%82%B9%E5%87%BB%E6%8C%89%E9%92%AE%E7%BC%A9%E6%94%BEimage.png)
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E5%8F%AA%E6%98%BE%E7%A4%BA%E6%B3%A2%E5%BD%A2%E5%9B%BEimage.png)
 ## 参与贡献
