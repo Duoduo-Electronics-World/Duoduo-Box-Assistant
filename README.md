@@ -96,8 +96,8 @@ SEGGER_RTT_ConfigDownBuffer(unsigned BufferIndex, const char* sName, void* pBuff
 >  pBuffer：缓冲区地址。  
 >  BufferSize：缓冲区大小。  
 >  Mode：缓冲模式（如SEGGER_RTT_MODE_NO_BLOCK_SKIP非阻塞跳过模式）。  
->  **$\color{#663366}{RTT缓冲区大小的根本限制}$**  
->  **$\color{#FF0000}{核心原则：RTT缓冲区直接占用MCU的RAM，调试器只是读取该内存区域。}$**  
+>  **RTT缓冲区大小的根本限制：**  
+>  **$\color{#FF0000}{RTT缓冲区直接占用MCU的RAM，调试器只是读取该内存区域。}$**  
 >  **$\color{#FF0000}{因此，缓冲区最大尺寸的硬性上限是您愿意且能够从MCU总RAM中划拨出的空间。}$**  
 >  MCU型号总RAM容量  
 >  建议的RTT缓冲区大小  
