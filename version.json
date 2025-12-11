@@ -2,6 +2,6 @@
     "version": "1.0.8",
     "version_code": 108,
     "download_url": "https://gitee.com/momingchuan/duo-duo-box",
-    "release_notes": "1. 新增保存文件CSV类型\n 2. 增加自动保存功能 \n 3. 增加图表数据解析错误码提示功能\n 4. 增加小工具面板\n",
+    "release_notes": "1. 新增保存文件CSV类型\n 2. 增加自动保存功能 \n 3. 增加图表数据解析错误码提示功能\n 4. 增加小工具面板\n 5. 修复J-link数据接收时出现偶尔丢失问题",
     "release_date": "2025-12-11"
 }
