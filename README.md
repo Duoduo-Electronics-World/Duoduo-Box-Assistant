@@ -111,6 +111,7 @@ SEGGER_RTT_ConfigDownBuffer(unsigned BufferIndex, const char* sName, void* pBuff
 
 
 #### 波形图帧格式    
+![输入图片说明](%E5%9B%BE%E7%89%87/%E6%B3%A2%E5%BD%A2%E5%9B%BE%E5%8A%A8%E7%94%BB.gif)  
 显示波形图发送数据格式,最大显示10个通道数据。  
 "ch:1,2,3,4,5,6,7,8,9,10\n"  
 数字1表示通道1的数据  
@@ -152,6 +153,13 @@ SEGGER_RTT_printf(0, "ch:%d,%d\n",buffer1[2],buffer2[2]);
 ```
 > Note:
 > 1. **RTT目前只支持0通道，不支持其他通道**。这意味着你只能调用SEGGER_RTT_printf(0, "test\n")发送数据，而不能调用SEGGER_RTT_printf(1,"test\n")去发送数据。  
+
+#### 柱状图
+
+![输入图片说明](%E5%9B%BE%E7%89%87/%E6%9F%B1%E7%8A%B6%E5%9B%BE%E5%8A%A8%E7%94%BB.gif)  
+
+
+
 ## 错误  
 ### PARSE 0x0000 数据解析错误  
 **PARSE 表示数据解析错误**  
