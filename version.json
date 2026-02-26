@@ -1,7 +1,7 @@
 {
-    "version": "1.0.8",
-    "version_code": 108,
+    "version": "1.1.0",
+    "version_code": 109,
     "download_url": "https://gitee.com/momingchuan/duo-duo-box",
-    "release_notes": "1. 新增保存文件CSV类型\n 2. 增加自动保存功能 \n 3. 增加图表数据解析错误码提示功能\n 4. 增加小工具面板\n 5. 修复J-link数据接收时出现偶尔丢失问题",
-    "release_date": "2025-12-11"
+    "release_notes": "1. 新增柱状图统计数据概率分布\n 2. 增加深色主题模式 \n 3. 增加重启软件后发送记录也会保存\n 4. 数据解析性能优化提升40%\n 5. 增加用户使用手册",
+    "release_date": "2026-2-26"
 }
