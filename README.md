@@ -213,9 +213,13 @@ SEGGER_RTT_printf(0, "ch:%d,%d\n",buffer1[2],buffer2[2]);
 
 
 ## 使用技巧  
+### 软件操作界面 
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E6%89%8B%E5%8A%A8%E8%BF%9E%E6%8E%A5image.png)
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E7%82%B9%E5%87%BB%E6%8C%89%E9%92%AE%E7%BC%A9%E6%94%BEimage.png)
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E5%8F%AA%E6%98%BE%E7%A4%BA%E6%B3%A2%E5%BD%A2%E5%9B%BEimage.png)
+### 数据保存处理  
+![输入图片说明](%E5%9B%BE%E7%89%87/%E6%95%B0%E6%8D%AE%E4%BF%9D%E5%AD%98.gif)
+![输入图片说明](%E5%9B%BE%E7%89%87/WPS%E6%95%B0%E6%8D%AE%E5%88%86%E5%89%B2%E4%BF%9D%E5%AD%98.gif)
 ## 参与贡献
 
 **@多多盒子工作室**
