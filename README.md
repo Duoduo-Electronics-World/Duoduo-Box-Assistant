@@ -1,3 +1,7 @@
+---
+typora-root-url: 图片
+---
+
 # 多多盒子助手 -V 1.2.0  
 
 
@@ -66,7 +70,7 @@
 
 J_Link的的数据传输速度可达多少？
 
-![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5CJlink%E9%80%9F%E5%BA%A6%E5%9B%BE.jpg)
+![](/Jlink%E9%80%9F%E5%BA%A6%E5%9B%BE.jpg)
 
 从上图可见，RTT的传输速度可达1us传输82个字符，这速度还是相当可观的。
 
@@ -74,7 +78,7 @@ J_Link的的数据传输速度可达多少？
 
 还有一组RTT的传输速度曲线可供参考。
 
-![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5CJ-link%E5%92%8C%E5%85%B6%E4%BB%96%E6%8E%A5%E5%8F%A3%E6%AF%94%E8%BE%83%E9%80%9F%E5%BA%A6%E5%9B%BE.png)
+![](/J-link%E5%92%8C%E5%85%B6%E4%BB%96%E6%8E%A5%E5%8F%A3%E6%AF%94%E8%BE%83%E9%80%9F%E5%BA%A6%E5%9B%BE.png)
 
 ##### RTT工程移植
 
