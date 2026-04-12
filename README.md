@@ -1,6 +1,4 @@
----
-typora-root-url: 图片
----
+
 
 # 多多盒子助手 -V 1.2.0  
 
@@ -68,19 +66,18 @@ typora-root-url: 图片
 
 
 
-J_Link的的数据传输速度可达多少？
+J_Link的的数据传输速度可达多少？  
 
-![](/Jlink%E9%80%9F%E5%BA%A6%E5%9B%BE.jpg)
+![输入图片说明](%E5%9B%BE%E7%89%87/Jlink%E9%80%9F%E5%BA%A6%E5%9B%BE.jpg)  
+从上图可见，RTT的传输速度可达1us传输82个字符，这速度还是相当可观的。  
 
-从上图可见，RTT的传输速度可达1us传输82个字符，这速度还是相当可观的。
+> 测试条件：STM32F407 Cortex-M4，时钟168M  
 
-> 测试条件：STM32F407 Cortex-M4，时钟168M
+还有一组RTT的传输速度曲线可供参考。  
 
-还有一组RTT的传输速度曲线可供参考。
+![输入图片说明](%E5%9B%BE%E7%89%87/J-link%E5%92%8C%E5%85%B6%E4%BB%96%E6%8E%A5%E5%8F%A3%E6%AF%94%E8%BE%83%E9%80%9F%E5%BA%A6%E5%9B%BE.png)  
 
-![](/J-link%E5%92%8C%E5%85%B6%E4%BB%96%E6%8E%A5%E5%8F%A3%E6%AF%94%E8%BE%83%E9%80%9F%E5%BA%A6%E5%9B%BE.png)
-
-##### RTT工程移植
+##### RTT工程移植  
 
 
 
@@ -170,7 +167,8 @@ SEGGER_RTT_printf(0, "ch:%d,%d\n",buffer1[2],buffer2[2]);
 
 ### 波形图
 波形图是一种以时间为横轴、数据值为纵轴，动态展示数据变化趋势的可视化图表。它能够清晰呈现信号在连续时间点上的波动情况，是观察数据实时变化、分析周期性或趋势性规律的理想工具。  在本软件中，波形图支持最多10个通道的数据并行显示。您可以通过右侧面板独立控制每个通道的颜色、线宽、散点显示及可见性。  图表会为每个通道实时计算并更新关键统计信息，包括最大值、最小值、平均值和标准差。标准差是衡量数据离散程度的核心指标，其值越小，表明该通道的数据越稳定，波动性越低。  
-![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5C%E6%B3%A2%E5%BD%A2%E5%9B%BE%E5%8A%A8%E5%9B%BE.gif)
+
+![输入图片说明](%E5%9B%BE%E7%89%87/%E6%B3%A2%E5%BD%A2%E5%9B%BE%E5%8A%A8%E5%9B%BE.gif)
 
 
 
@@ -180,7 +178,7 @@ SEGGER_RTT_printf(0, "ch:%d,%d\n",buffer1[2],buffer2[2]);
 
   
 
-  ![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5C%E6%B5%8B%E9%87%8F%E5%8D%A1%E5%B0%BA.png)
+![输入图片说明](%E5%9B%BE%E7%89%87/%E6%B5%8B%E9%87%8F%E5%8D%A1%E5%B0%BA.png)
 
 ### 直方图
 
@@ -209,9 +207,7 @@ X轴统计范围：X轴下限 = 0，X轴上限 = 1000
 移除数值18：第4个柱子计数减1（累计：柱子4=0）  
 最终统计结果：柱子1=2，柱子2=1，柱子4=0，柱子7=0  
 
-![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5C%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%8A%A8%E5%9B%BE.gif)
-
-
+![输入图片说明](%E5%9B%BE%E7%89%87/%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%8A%A8%E5%9B%BE.gif)
 
 ### 频谱图  
 
@@ -249,16 +245,13 @@ X轴统计范围：X轴下限 = 0，X轴上限 = 1000
 如果的你信号采样率是20kHz，1/20000 = 0.00005s 则你Δt=0.05ms，Δt就填 0.05  
 
 
-
+![输入图片说明](%E5%9B%BE%E7%89%87/%E9%A2%91%E8%B0%B1%E5%9B%BE.gif)
 
 
 ### 图表移出主窗口操作  
 
 
-
-![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5C%E5%9B%BE%E8%A1%A8%E7%A7%BB%E5%8A%A8%E5%87%BA%E6%82%AC%E6%B5%AE%E7%AA%97%E5%8F%A3%E6%93%8D%E4%BD%9C.gif)
-
-
+![输入图片说明](%E5%9B%BE%E7%89%87/%E5%9B%BE%E8%A1%A8%E7%A7%BB%E5%8A%A8%E5%87%BA%E6%82%AC%E6%B5%AE%E7%AA%97%E5%8F%A3%E6%93%8D%E4%BD%9C.gif)
 
 
 
