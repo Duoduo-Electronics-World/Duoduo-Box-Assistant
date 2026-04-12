@@ -1,0 +1,57 @@
+{
+    "display_settings": {
+        "language": 0,
+        "theme": 0
+    },
+    "jlink_settings": {
+        "address_mode": "auto",
+        "baud_rate": 2000,
+        "hex_mode": false,
+        "histogram_lower_limit": 0,
+        "histogram_time_increment": 1,
+        "histogram_upper_limit": 10000,
+        "histogram_upper_limit_buffer": 50000,
+        "max_address": "",
+        "max_history_items": 0,
+        "min_address": "",
+        "refresh_interval": 50,
+        "reset_on_connect": false,
+        "send_history": [
+        ],
+        "send_history_formats": [
+        ],
+        "show_timestamp": false,
+        "spectrum_fft_size": 1024,
+        "spectrum_time_increment": 1,
+        "spectrum_window_type": 0,
+        "target_device": "stm32f103c8",
+        "upper_limit_buffer": 10000,
+        "waveform_time_increment": 1
+    },
+    "serial_settings": {
+        "baud_rate": 115200,
+        "data_bits": 8,
+        "flow_control": "none",
+        "hex_mode": false,
+        "histogram_lower_limit": 0,
+        "histogram_time_increment": 1,
+        "histogram_upper_limit": 1000,
+        "histogram_upper_limit_buffer": 50000,
+        "max_history_items": 0,
+        "parity": "none",
+        "port_name": "COM1",
+        "refresh_interval": 50,
+        "send_history": [
+        ],
+        "send_history_formats": [
+        ],
+        "show_timestamp": false,
+        "spectrum_fft_size": 1024,
+        "spectrum_time_increment": 1,
+        "spectrum_window_type": 0,
+        "stop_bits": 1,
+        "upper_limit_buffer": 5000,
+        "waveform_time_increment": 1
+    },
+    "version": "1.0"
+}

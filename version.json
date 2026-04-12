@@ -1,7 +1,7 @@
 {
-    "version": "1.1.0",
-    "version_code": 109,
+    "version": "1.2.0",
+    "version_code": 120,
     "download_url": "https://gitee.com/momingchuan/duo-duo-box",
-    "release_notes": "1. 新增柱状图统计数据概率分布\n 2. 增加深色主题模式 \n 3. 增加重启软件后发送记录也会保存\n 4. 数据解析性能优化提升40%\n 5. 增加用户使用手册",
-    "release_date": "2026-2-26"
+    "release_notes": "1. 增加小工具部件\n 2. 增加ASCLL表格 \n 3. 增加CRC校验计算\n 4. 增加波形图数据框选功能\n 5. 增加FFT频域分析图表\n 6. 修复一些已知的BUG",
+    "release_date": "2026-4-12"
 }
