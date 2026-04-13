@@ -93,6 +93,10 @@ J_Link的的数据传输速度可达多少？
 SEGGER_RTT_ConfigUpBuffer(unsigned BufferIndex, const char* sName, void* pBuffer, unsigned BufferSize, unsigned Flags)  
 SEGGER_RTT_ConfigDownBuffer(unsigned BufferIndex, const char* sName, void* pBuffer, unsigned BufferSize, unsigned Flags)  
 ```
+> **读取函数**
+```
+unsigned SEGGER_RTT_Read(unsigned BufferIndex, void* pBuffer, unsigned BufferSize)
+```
 >  用途：用于创建自定义的上行（MCU到调试器）或下行（调试器到MCU）通道，替换默认的0号通道。  
 >  **配置步骤：**  
 >  定义缓冲区：声明静态字符数组作为数据缓冲区。  
