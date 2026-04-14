@@ -9,7 +9,9 @@
 - **预计下次更新在2026年6月左右**  
 
 ​    更新预告：  
-1、考虑增加ST-link。  
+1、考虑增加ST-link。    
+2、增加进制计算器。  
+3、修复已知BUG  
 
 
 
@@ -124,8 +126,10 @@ unsigned SEGGER_RTT_Read(unsigned BufferIndex, void* pBuffer, unsigned BufferSiz
 
 
 
-## 图表帧格式    
+## 图表    
 
+### 图表帧格式  
+  
 显示波形图发送数据格式,最大显示10个通道数据。  
 "ch:1,2,3,4,5,6,7,8,9,10\n"  
 数字1表示通道1的数据  
