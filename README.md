@@ -8,9 +8,10 @@
 - **短期内会继续更新请期待，欢迎广大工程师积极留言反馈BUG，任何问题都可在Gitee网站的Issues留言反馈**  
 - **预计下次更新在2026年6月左右**  
 
-​    更新预告：  
-1、考虑增加ST-link。    
-3、修复已知BUG  
+​    更新说明：  
+1、增加通用调试器窗口，支持通过调试器读取芯片内存并绑定到图表通道。    
+2、优化波形图、直方图、频谱图等数据采集流程。  
+3、修复已知BUG。  
 
 
 
@@ -28,6 +29,8 @@
  🔌 **多协议多设备支持**
 - **串口调试** - 完整串口参数配置（波特率、数据位、校验位等）
 - **J-Link** - 支持RTT实时数据传输
+- **通用调试器** - 支持ST-Link、J-Link、CMSIS-DAP等常用调试器读取芯片内存
+- **内存图表采集** - 支持把芯片RAM变量直接绑定到波形图、直方图、频谱图通道
 - **多窗口并行** - 同时打开多个串口和J-Link设备窗口
 - **设备独立管理** - 每个窗口独立运行，互不干扰
 
@@ -47,27 +50,21 @@
 
 
 ## 安装教程
-**1、打开文件夹：**  
-![输入图片说明](%E5%9B%BE%E7%89%87/%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6%E5%A4%B9image.png)  
-
 **2、启动软件：**  
-![输入图片说明](%E5%9B%BE%E7%89%87/%E5%90%AF%E5%8A%A8%E8%BD%AF%E4%BB%B6image.png)  
+
+![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cserial-tool_-cpp%5CSerialTool%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5C%E5%90%AF%E5%8A%A8%E8%BD%AF%E4%BB%B6.gif)
+
+## J-Link RTT使用说明
+
+#### J-Link
+
+如果使用 J-Link，则需要安装 J-Link 驱动。如果已经安装过 J-Link 驱动，可以不用重复安装；为了避免兼容性问题，建议使用说明书中推荐的驱动版本。  
 
 
 
-## 使用说明  
+![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cserial-tool_-cpp%5CSerialTool%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5C%E5%AE%89%E8%A3%85J-link%E9%A9%B1%E5%8A%A8.gif)
 
-#### J-link使用说明  
-
-如果使用j-link 则安装J-link驱动，如果已经安装过J-link驱动了则不用安装，但是为了避免可能出现未知的错误问题，还是强烈建议安装此版本的J-link驱动程序。  
-
-
-
-![输入图片说明](%E5%9B%BE%E7%89%87/%E5%AE%89%E8%A3%85J-link%E9%A9%B1%E5%8A%A811zon_created-GIF%20(4).gif)
-
-
-
-J_Link的的数据传输速度可达多少？  
+J-Link 的数据传输速度可达多少？  
 
 ![输入图片说明](%E5%9B%BE%E7%89%87/Jlink%E9%80%9F%E5%BA%A6%E5%9B%BE.jpg)  
 从上图可见，RTT的传输速度可达1us传输82个字符，这速度还是相当可观的。  
@@ -78,7 +75,7 @@ J_Link的的数据传输速度可达多少？
 
 ![输入图片说明](%E5%9B%BE%E7%89%87/J-link%E5%92%8C%E5%85%B6%E4%BB%96%E6%8E%A5%E5%8F%A3%E6%AF%94%E8%BE%83%E9%80%9F%E5%BA%A6%E5%9B%BE.png)  
 
-##### RTT工程移植  
+#### RTT工程移植  
 
 
 
@@ -125,6 +122,243 @@ unsigned SEGGER_RTT_Read(unsigned BufferIndex, void* pBuffer, unsigned BufferSiz
 
 
 
+## 调试器
+
+通用调试器内存采集说明
+
+**通用调试器  包含：**  
+
+- ST-Link  
+- J-Link  
+- CMSIS-DAP  
+- FTDI 系列调试器  
+- Raspberry Pi GPIO 调试方式  
+- Bus Pirate  
+- JTAGkey / Amontec  
+- HLA 类适配器  
+各类芯片厂商或开发板自带的调试适配器  
+
+**通用调试器窗口可以直接读取芯片内存地址，并把读取到的数据绑定到图表通道。这个方式适合做变量观察、慢速趋势采集、状态量显示和简单波形验证。**
+
+需要注意：调试器读取的是“地址 + 数据类型”，上位机本身不知道单片机里的变量名。因此单片机程序里需要先定义好变量，再通过Keil、map文件或调试窗口获取变量地址。
+
+### STM32 测试结构体例子
+
+可以在 STM32 工程中加入下面代码，例如放到 `main.c`，或单独放到 `debug_data.c/.h`。
+
+```c
+#include <stdint.h>
+#include <stdbool.h>
+
+typedef enum
+{
+    DEBUG_STATE_IDLE = 0,
+    DEBUG_STATE_RUN  = 1,
+    DEBUG_STATE_ERR  = 2
+} DebugState_t;
+
+typedef struct
+{
+    int32_t      ch0_i32;     // 上位机类型：int32
+    uint32_t     ch1_u32;     // 上位机类型：uint32
+    float        ch2_float;   // 上位机类型：float
+    int16_t      ch3_i16;     // 上位机类型：int16
+    uint16_t     ch4_u16;     // 上位机类型：uint16
+    int8_t       ch5_i8;      // 上位机类型：int8
+    uint8_t      ch6_u8;      // 上位机类型：uint8
+    char         ch7_char;    // 上位机类型：int8 或 uint8
+    bool         ch8_bool;    // 上位机类型：uint8
+    DebugState_t ch9_state;   // 上位机类型：int32
+} DebuggerData_t;
+
+volatile DebuggerData_t g_debuggerData;
+```
+
+`volatile` 建议保留。它告诉编译器：这个变量可能被外部调试器读取，不要随便优化掉。
+
+### 更新测试数据
+
+可以写一个更新函数，让每个成员变量持续变化，方便上位机验证采集是否正常。
+
+```c
+void DebuggerData_Update(void)
+{
+    static uint32_t counter = 0;
+    counter++;
+
+    g_debuggerData.ch0_i32   = (int32_t)counter;
+    g_debuggerData.ch1_u32   = counter * 2U;
+    g_debuggerData.ch2_float = counter * 0.1f;
+    g_debuggerData.ch3_i16   = (int16_t)(counter % 30000U);
+    g_debuggerData.ch4_u16   = (uint16_t)(counter % 60000U);
+    g_debuggerData.ch5_i8    = (int8_t)(counter % 120U);
+    g_debuggerData.ch6_u8    = (uint8_t)(counter % 255U);
+    g_debuggerData.ch7_char  = (char)('A' + (counter % 26U));
+    g_debuggerData.ch8_bool  = (counter & 1U) ? true : false;
+    g_debuggerData.ch9_state = (counter % 3U) == 0U ? DEBUG_STATE_IDLE :
+                              (counter % 3U) == 1U ? DEBUG_STATE_RUN :
+                                                     DEBUG_STATE_ERR;
+}
+```
+
+在主循环或定时任务中调用：
+
+```c
+while (1)
+{
+    DebuggerData_Update();
+    HAL_Delay(10);
+}
+```
+
+如果没有使用 HAL，也可以放在自己的定时任务、RTOS任务或主循环里更新。
+
+### 获取变量地址
+
+**方法一：Keil MDK 查看地址**
+
+编译后进入 Debug，打开 Watch 窗口，输入：
+
+```c
+&g_debuggerData
+&g_debuggerData.ch0_i32
+&g_debuggerData.ch1_u32
+&g_debuggerData.ch2_float
+```
+
+Keil 会显示结构体和成员变量的实际地址。
+
+![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cserial-tool_-cpp%5CSerialTool%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5CSTM32%20%E8%8E%B7%E5%8F%96%E9%80%9A%E9%81%93%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9C%B0%E5%9D%80.gif)
+
+**方法二：查看 map 文件**
+
+编译后打开工程输出目录里的 `.map` 文件，搜索：
+
+```text
+g_debuggerData
+```
+
+可以找到结构体起始地址。如果只拿到结构体起始地址，也可以按偏移计算每个成员地址。
+
+### 独立地址模式
+
+混合类型结构体推荐使用“独立地址模式”。每个通道单独填写变量地址，最稳，也最容易排查。
+
+假设查到：
+
+```text
+g_debuggerData 地址 = 0x20004410
+```
+
+常见 ARM 编译配置下，结构体成员通常如下排列：
+
+| 通道 | 成员 | 地址填写 | 类型 |
+|---|---|---|---|
+| 通道0 | ch0_i32 | 0x20004410 | int32 |
+| 通道1 | ch1_u32 | 0x20004414 | uint32 |
+| 通道2 | ch2_float | 0x20004418 | float |
+| 通道3 | ch3_i16 | 0x2000441C | int16 |
+| 通道4 | ch4_u16 | 0x2000441E | uint16 |
+| 通道5 | ch5_i8 | 0x20004420 | int8 |
+| 通道6 | ch6_u8 | 0x20004421 | uint8 |
+| 通道7 | ch7_char | 0x20004422 | int8 |
+| 通道8 | ch8_bool | 0x20004423 | uint8 |
+| 通道9 | ch9_state | 0x20004424 | int32 |
+
+不同编译器、不同结构体顺序可能产生不同对齐和填充。最可靠的方法是直接在 Keil Watch 里查看每个成员的地址。
+
+### 连续地址模式
+
+如果结构体成员是连续排列的，也可以用“连续地址模式”：
+
+```text
+起始地址：g_debuggerData 的地址
+```
+
+然后按通道顺序选择类型：
+
+```text
+通道0 int32
+通道1 uint32
+通道2 float
+通道3 int16
+通道4 uint16
+通道5 int8
+通道6 uint8
+通道7 int8
+通道8 uint8
+通道9 int32
+```
+
+但只要结构体中间出现编译器填充字节，连续地址模式就可能读错。混合类型结构体建议优先使用“独立地址模式”。
+
+![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cserial-tool_-cpp%5CSerialTool%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5C%E8%B0%83%E5%BC%8F%E5%99%A8%E7%BB%91%E5%AE%9A%E6%95%B0%E6%8D%AE%E9%80%9A%E9%81%93%E6%98%BE%E7%A4%BA%E5%9B%BE%E8%A1%A8%E6%95%B0%E6%8D%AE.gif)
+
+
+
+### 固定地址不变的做法
+
+如果只是测试，直接使用全局变量 `g_debuggerData` 即可。每次编译后重新查看地址。
+
+如果希望地址长期固定，例如固定到：
+
+```text
+0x20007000
+```
+
+不要只写：
+
+```c
+#define DEBUG_DATA_ADDR 0x20007000UL
+```
+
+这种写法只是强制往这个地址写，并没有告诉链接器这块 RAM 已经被占用，仍然可能和普通变量、堆、栈冲突。
+
+更稳的做法是：在 linker/scatter 文件里专门预留一小段 RAM，然后把调试变量放进去。
+
+Keil ARMClang 示例：
+
+```c
+__attribute__((section(".debugger_data")))
+volatile DebuggerData_t g_debuggerData;
+```
+
+Scatter 文件中预留一段 RAM，例如：
+
+```text
+RW_IRAM1 0x20000000 0x7000  {
+  .ANY (+RW +ZI)
+}
+
+RW_DEBUGGER_DATA 0x20007000 0x100  {
+  *(.debugger_data)
+}
+```
+
+这样 `g_debuggerData` 会被放到 `0x20007000` 附近，上位机就可以长期填写这个地址。
+
+注意：`0x20007000` 不是所有 STM32 都通用，必须确认芯片 RAM 覆盖这个地址。
+
+### 快速检查
+
+连接调试器后，可以先用“内存读取”读取结构体起始地址，例如：
+
+```text
+读取地址：0x20004410
+读取长度：32 字节
+```
+
+如果能看到数据不断变化，再切到“图表采集”绑定通道。
+
+如果读取失败，优先检查：
+
+1. 地址是否在芯片 RAM 范围内。
+2. 芯片系列是否选对，例如 STM32G431 选择 `stm32g4x.cfg`。
+3. 变量是否被定义成全局或静态变量。
+4. 是否加了 `volatile`。
+5. 程序是否正在运行并更新这个变量。
+
+
 ## 图表    
 
 ### 图表帧格式  
@@ -141,7 +375,7 @@ unsigned SEGGER_RTT_Read(unsigned BufferIndex, void* pBuffer, unsigned BufferSiz
 数字8表示通道8的数据  
 数字9表示通道9的数据  
 数字10表示通道10的数据  
-一帧数据后面一定要加换行符‌，否则图标显示不出来。  
+一帧数据后面一定要加换行符‌，否则图表显示不出来。  
 例如显示通道1波形图：  
 "ch:65\n"  
 "ch:71\n"  
@@ -251,8 +485,8 @@ X轴统计范围：X轴下限 = 0，X轴上限 = 1000
 
 **1  /  Δt(ms)   =  信号采样率 Hz**  
 
-如果的你信号采样率是1000Hz，1/1000 = 0.001s，则你Δt=1ms，Δt就填 1  
-如果的你信号采样率是20kHz，1/20000 = 0.00005s 则你Δt=0.05ms，Δt就填 0.05  
+如果你的信号采样率是1000Hz，1/1000 = 0.001s，则 Δt = 1ms，Δt 就填 1。  
+如果你的信号采样率是20kHz，1/20000 = 0.00005s，则 Δt = 0.05ms，Δt 就填 0.05。  
 
 
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E9%A2%91%E8%B0%B1%E5%9B%BE.gif)
@@ -292,7 +526,7 @@ X轴统计范围：X轴下限 = 0，X轴上限 = 1000
 **0x0000 十六进制错误码，用于标识具体错误类型**  
 错误码 | 错误名称          |  中文说明                 |  常见原因
 ----   | -----            | ------                   | ------- 
-0x0001 | 发送数据错误      | 当在使用J-link发送数据的时候，由于下位机设备没有及时读取数据导致发送错误。状态栏会显示已成功发送的字节数。       |上位机发送太快下位机没有及时处理或者没有处理导致发送错误产生。
+0x0001 | 发送数据错误      | 当使用 J-Link 发送数据时，如果下位机设备没有及时读取数据，可能导致发送错误。状态栏会显示已成功发送的字节数。       |上位机发送太快，下位机没有及时处理或没有处理，导致发送错误产生。
 
 
 
