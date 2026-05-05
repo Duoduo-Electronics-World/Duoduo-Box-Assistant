@@ -52,7 +52,7 @@
 ## 安装教程
 **2、启动软件：**  
 
-![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cserial-tool_-cpp%5CSerialTool%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5C%E5%90%AF%E5%8A%A8%E8%BD%AF%E4%BB%B6.gif)
+![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5C%E5%90%AF%E5%8A%A8%E8%BD%AF%E4%BB%B6.gif)
 
 ## J-Link RTT使用说明
 
