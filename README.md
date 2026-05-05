@@ -522,6 +522,23 @@ X轴统计范围：X轴下限 = 0，X轴上限 = 1000
 
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E5%9B%BE%E8%A1%A8%E7%A7%BB%E5%8A%A8%E5%87%BA%E6%82%AC%E6%B5%AE%E7%AA%97%E5%8F%A3%E6%93%8D%E4%BD%9C.gif)
 
+## 工具  
+### CRC校验计算  
+
+![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5CCRC%E8%AE%A1%E7%AE%97%E5%99%A8.gif)
+
+### ASCLL表  
+
+![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5CASCLL%E7%A0%81.gif)
+
+### RGB颜色码互转  
+
+![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5CRGB%E9%A2%9C%E8%89%B2%E7%A0%81%E4%BA%92%E6%8D%A2.gif)
+
+### 进制计算器  
+
+![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5C%E8%BF%9B%E5%88%B6%E8%AE%A1%E7%AE%97%E5%99%A8.gif)
+
 
 
 ## 错误  
