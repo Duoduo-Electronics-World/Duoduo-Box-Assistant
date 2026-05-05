@@ -52,7 +52,7 @@
 ## 安装教程
 **2、启动软件：**  
 
-![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5C%E5%90%AF%E5%8A%A8%E8%BD%AF%E4%BB%B6.gif)
+![输入图片说明](%E5%9B%BE%E7%89%87/%E5%90%AF%E5%8A%A8%E8%BD%AF%E4%BB%B6.gif)
 
 ## J-Link RTT使用说明
 
@@ -60,9 +60,7 @@
 
 如果使用 J-Link，则需要安装 J-Link 驱动。如果已经安装过 J-Link 驱动，可以不用重复安装；为了避免兼容性问题，建议使用说明书中推荐的驱动版本。  
 
-
-
-![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cserial-tool_-cpp%5CSerialTool%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5C%E5%AE%89%E8%A3%85J-link%E9%A9%B1%E5%8A%A8.gif)
+![输入图片说明](%E5%9B%BE%E7%89%87/%E5%AE%89%E8%A3%85J-link%E9%A9%B1%E5%8A%A8.gif)
 
 J-Link 的数据传输速度可达多少？  
 
@@ -228,7 +226,7 @@ while (1)
 
 Keil 会显示结构体和成员变量的实际地址。
 
-![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cserial-tool_-cpp%5CSerialTool%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5CSTM32%20%E8%8E%B7%E5%8F%96%E9%80%9A%E9%81%93%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9C%B0%E5%9D%80.gif)
+![输入图片说明](%E5%9B%BE%E7%89%87/STM32%20%E8%8E%B7%E5%8F%96%E9%80%9A%E9%81%93%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9C%B0%E5%9D%80.gif)
 
 **方法二：查看 map 文件**
 
@@ -292,8 +290,7 @@ g_debuggerData 地址 = 0x20004410
 
 但只要结构体中间出现编译器填充字节，连续地址模式就可能读错。混合类型结构体建议优先使用“独立地址模式”。
 
-![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cserial-tool_-cpp%5CSerialTool%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5C%E8%B0%83%E5%BC%8F%E5%99%A8%E7%BB%91%E5%AE%9A%E6%95%B0%E6%8D%AE%E9%80%9A%E9%81%93%E6%98%BE%E7%A4%BA%E5%9B%BE%E8%A1%A8%E6%95%B0%E6%8D%AE.gif)
-
+![输入图片说明](%E5%9B%BE%E7%89%87/%E8%B0%83%E5%BC%8F%E5%99%A8%E7%BB%91%E5%AE%9A%E6%95%B0%E6%8D%AE%E9%80%9A%E9%81%93%E6%98%BE%E7%A4%BA%E5%9B%BE%E8%A1%A8%E6%95%B0%E6%8D%AE.gif)
 
 
 ### 固定地址不变的做法
@@ -525,19 +522,19 @@ X轴统计范围：X轴下限 = 0，X轴上限 = 1000
 ## 工具  
 ### CRC校验计算  
 
-![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5CCRC%E8%AE%A1%E7%AE%97%E5%99%A8.gif)
+![输入图片说明](%E5%9B%BE%E7%89%87/CRC%E8%AE%A1%E7%AE%97%E5%99%A8.gif)
 
 ### ASCLL表  
 
-![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5CASCLL%E7%A0%81.gif)
+![输入图片说明](%E5%9B%BE%E7%89%87/ASCLL%E7%A0%81.gif)
 
 ### RGB颜色码互转  
 
-![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5CRGB%E9%A2%9C%E8%89%B2%E7%A0%81%E4%BA%92%E6%8D%A2.gif)
+![输入图片说明](%E5%9B%BE%E7%89%87/RGB%E9%A2%9C%E8%89%B2%E7%A0%81%E4%BA%92%E6%8D%A2.gif)
 
 ### 进制计算器  
 
-![](C:%5CUsers%5Casus%5CDesktop%5CC++Project%5Cduo-duo-box%5C%E5%9B%BE%E7%89%87%5C%E8%BF%9B%E5%88%B6%E8%AE%A1%E7%AE%97%E5%99%A8.gif)
+![输入图片说明](%E5%9B%BE%E7%89%87/%E8%BF%9B%E5%88%B6%E8%AE%A1%E7%AE%97%E5%99%A8.gif)
 
 
 
