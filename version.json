@@ -2,15 +2,7 @@
     "version": "1.2.5",
     "version_code": 125,
     "download_url": "https://gitee.com/momingchuan/duo-duo-box",
-    "release_notes": 
-        "1. 增加通用调试器窗口"+
-        "2. 增加ST-link"+
-        "3. 增加CMSIS-DAP"+
-        "4. 优化波形图、直方图、频谱图等数据采集流程"+
-        "5. 优化主题热切换"+
-        "6. 优化语言热切换"+
-        "7. 修复一些已知的BUG"
-    ,
+    "release_notes":  "1. 增加通用调试器窗口\n2. 增加ST-link \n3. 增加CMSIS-DAP \n4. 优化波形图、直方图、频谱图等数据采集流程 \n5. 优化主题热切换\n6. 优化语言热切换 \n7. 修复一些已知的BUG",
     "release_date": "2026-5-7"
 }
 
