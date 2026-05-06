@@ -611,5 +611,5 @@ X轴统计范围：X轴下限 = 0，X轴上限 = 1000
 
 
 ## 获取最新版本
-[仓库网址](http://https://gitee.com/momingchuan/duo-duo-box)  
+[仓库网址](http://gitee.com/momingchuan/duo-duo-box)
 [官方网址](http://www.duoduodianzi.top)
