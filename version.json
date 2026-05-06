@@ -1,7 +1,15 @@
 {
-    "version": "1.2.2",
-    "version_code": 122,
+    "version": "1.2.5",
+    "version_code": 125,
     "download_url": "https://gitee.com/momingchuan/duo-duo-box",
-    "release_notes": " 1. 增加小工具部件\n 2. 增加ASCLL表格 \n 3. 增加CRC校验计算\n 4. 增加波形图数据框选功能\n 5. 增加FFT频域分析图表\n 6. 增加进制计算器 \n 7. 修复一些已知的BUG",
-    "release_date": "2026-4-18"
+    "release_notes": [
+        "1. 增加通用调试器窗口",
+        "2. 增加ST-link",
+        "3. 增加CMSIS-DAP",
+        "4. 优化波形图、直方图、频谱图等数据采集流程",
+        "5. 优化主题热切换",
+        "6. 优化语言热切换",
+        "7. 修复一些已知的BUG"
+    ],
+    "release_date": "2026-5-7"
 }
