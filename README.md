@@ -1,160 +1,154 @@
+# DuoDuo Box Assistant - V 1.2.6
 
+- **If this project is useful to you, please give it a star.**
+- **The project will continue to be updated. Engineers are welcome to report bugs and suggestions in Gitee Issues.**
+- **The next update is expected around June 2026.**
 
-# 多多盒子助手 -V 1.2.6   
+Update notes:
 
+1. Added TCP Client sessions.
+2. Added TCP Server sessions.
+3. Added UDP sessions.
+4. Fixed known bugs.
 
+## Introduction
 
-- **如果这个项目对你有帮助，请给我们一个 ⭐ 星标！**  
-- **短期内会继续更新请期待，欢迎广大工程师积极留言反馈BUG，任何问题都可在Gitee网站的Issues留言反馈**  
-- **预计下次更新在2026年6月左右**  
+DuoDuo Box Assistant is a multi-function embedded debugging tool. It supports serial debugging, J-Link RTT, generic debugger memory reading, TCP/UDP network debugging, real-time charts, common encoding tools, and data export.
 
-​    更新说明：  
-1、修复已知BUG。     
+Feature overview:
 
+### Real-Time Charts And Data Analysis
 
+- **10-channel real-time chart display**: waveform, histogram, and spectrum views for sensor data, control values, status values, and debug logs.
+- **Chart interaction**: zoom, drag, auto-follow, pause drawing, clear data, and box selection.
+- **Per-channel configuration**: independent channel name, color, visibility, gain, offset, line width, and point size.
+- **Statistics**: real-time maximum, minimum, average value, and standard deviation.
+- **Configurable chart buffer**: balance long-term observation with memory usage.
 
+### Chart Parsing And High-Speed Logs
 
-## 介绍  
+- **Custom chart frame prefix**: serial, J-Link RTT, TCP Client, TCP Server, and UDP sessions share the same chart-frame parser. The default prefix is `ch:`, and short prefixes such as `adc:` or `imu:` are also supported.
+- **Simple CSV mode**: disable frame-prefix parsing to parse frames such as `1,2,3\n` directly.
+- **Parsing switch**: disable chart parsing for high-speed plain log streams to reduce unnecessary parsing overhead.
+- **Error-frame hints**: optional `PARSE 0x...` error codes help locate prefix mismatch, missing newline, invalid channel data, and other frame-format problems.
 
-多多盒子助手是一款面向嵌入式调试、通信测试和实时数据可视化的多功能工具。软件支持串口、J-Link RTT、通用调试器、TCP客户端、TCP服务端和UDP会话，并提供波形图、直方图、频谱图、编码转换、周期发送和数据导出等常用调试能力。
+### Multi-Protocol Device Support
 
-🌟 特性概览
+- **Serial debugging**: baud rate, data bits, parity, stop bits, flow control, text/hex send and receive, and selectable text encodings.
+- **J-Link RTT**: high-speed embedded logs and chart data through RTT.
+- **Generic Debugger**: read target memory through common debuggers such as ST-Link, J-Link, and CMSIS-DAP, then bind variables to chart channels.
+- **TCP Client**: connect to a local, LAN, or remote TCP server, with local address/port binding and auto reconnect.
+- **TCP Server**: listen on a selected address and port, show client count, accept multiple clients, send to all or a selected client, and disconnect a selected client.
+- **UDP**: send to a fixed target or the last sender, suitable for connectionless packets, device discovery, broadcast/unicast testing, and lightweight protocol debugging.
 
-📊 **实时图表与数据分析**
-- **10通道实时图表显示** - 支持波形图、直方图和频谱图，适合传感器数据、控制量、状态量和调试日志可视化。
-- **图表交互控制** - 支持缩放、拖拽、自动跟随、暂停绘图、清空数据和框选筛选。
-- **通道独立配置** - 每个通道可独立设置名称、颜色、显示状态、增益、偏置、线宽和点大小。
-- **统计分析** - 实时显示最大值、最小值、平均值、标准差等统计信息，便于观察数据范围和波动情况。
-- **可配置缓冲区** - 支持设置图表最大缓存数量，兼顾长时间观察和内存占用控制。
+### Independent Multi-Window Sessions
 
-🔎 **图表解析与高性能日志流**
-- **自定义图表帧头** - 串口、J-Link RTT、TCP客户端、TCP服务端、UDP 共用图表帧解析规则，默认帧头为 `ch:`，也可设置为 `adc:`、`imu:` 等短帧头。
-- **简单CSV模式** - 可关闭帧头解析，直接解析 `1,2,3\n` 这类简单CSV帧。
-- **解析开关** - 普通高速日志流可以关闭“解析图表数据”，接收内容只进入日志区，减少不必要的解析开销。
-- **错误帧提示** - 可显示 `PARSE 0x...` 解析错误码，用于定位帧头不匹配、缺少换行符、通道数据异常等问题。
+- **Parallel sessions**: open multiple serial, J-Link, debugger, TCP Client, TCP Server, and UDP windows at the same time.
+- **Independent state**: each session has its own connection, receive/send area, counters, chart parser, and periodic sender.
+- **Independent configuration**: chart parsing, frame prefix, error-frame hints, send cycle, and repeat count are saved by session type to avoid configuration leakage between sessions.
 
-🔌 **多协议多设备支持**
-- **串口调试** - 支持波特率、数据位、校验位、停止位、流控、文本/十六进制收发和多编码显示。
-- **J-Link RTT** - 支持通过 RTT 获取高速嵌入式日志和图表数据。
-- **通用调试器** - 支持 ST-Link、J-Link、CMSIS-DAP 等常用调试器读取芯片内存，并把变量绑定到图表通道。
-- **TCP客户端** - 主动连接本机、局域网或远端TCP服务端，支持本地地址/端口绑定和自动重连。
-- **TCP服务端** - 监听指定地址和端口，显示客户端数量，支持多客户端接入、指定客户端发送和断开指定客户端。
-- **UDP通信** - 支持固定目标发送和回复最后接收方，适合无连接短报文、设备发现、广播/单播测试和轻量协议调试。
+### Internationalization And Encoding
 
-🧩 **多窗口独立会话**
-- **会话并行运行** - 可同时打开多个串口、J-Link、调试器、TCP客户端、TCP服务端和UDP窗口。
-- **状态互不影响** - 每个会话独立连接、独立收发、独立统计、独立图表解析和独立周期发送。
-- **配置独立保存** - 图表解析、帧头、错误帧提示、周期发送、重复次数等参数按会话类型保存，避免不同会话互相污染。
+- **Chinese/English UI**: switch languages without restarting the workflow.
+- **Multiple encodings**: UTF-8, GBK, ASCII, and other common text encodings.
+- **Send/receive helpers**: text, hex, append newline, send history, file sending, and common utility tools.
 
-🌍 **国际化与编码支持**
-- **中英文界面** - 支持中文/英文界面热切换。
-- **多编码解析** - 支持 UTF-8、GBK、ASCII 等常见文本编码。
-- **收发工具辅助** - 支持文本、十六进制、追加换行、历史发送、文件发送和常用小工具。
+### Efficient Data Processing
 
-⚡ **高效数据处理**
-- **大流量接收优化** - 接收区和图表缓存分别管理，降低高速日志流造成的界面压力。
-- **周期发送** - 支持设置发送周期和重复次数，适合命令轮询、压力测试和协议验证。
-- **数据导出** - 支持保存接收内容和导出图表数据，便于后续分析。
-- **错误状态管理** - 网络Socket类提示进入日志区，图表解析错误保留在状态栏，方便区分通信状态和数据格式问题。
+- **Large-stream receive optimization**: receive logs and chart buffers are managed separately to reduce UI pressure during high-speed streams.
+- **Periodic sending**: configurable send interval and repeat count for command polling, stress testing, and protocol validation.
+- **Data export**: save receive logs and export chart data for later analysis.
+- **Clear error separation**: network socket messages are written to the log area, while chart parsing errors remain in the status bar for easier diagnosis.
 
-### 主界面  
-![输入图片说明](%E5%9B%BE%E7%89%87/%E4%B8%BB%E9%A1%B5%E9%9D%A2.png)
+### Main Window
 
+![Main window](%E5%9B%BE%E7%89%87/%E4%B8%BB%E9%A1%B5%E9%9D%A2.png)
 
-## 安装教程
-**2、启动软件：**  
+## Installation
+
+Start the software:
 
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E5%90%AF%E5%8A%A8%E8%BD%AF%E4%BB%B6.gif)
 
-## J-Link RTT使用说明
+## J-Link RTT Guide
 
-#### J-Link
+### J-Link Driver
 
-如果使用 J-Link，则需要安装 J-Link 驱动。如果已经安装过 J-Link 驱动，可以不用重复安装；为了避免兼容性问题，建议使用说明书中推荐的驱动版本。  
+If you use J-Link, install the J-Link driver first. If the driver has already been installed, you do not need to install it again. To avoid compatibility problems, use the driver version recommended by this manual.
 
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E5%AE%89%E8%A3%85J-link%E9%A9%B1%E5%8A%A8.gif)
 
-J-Link 的数据传输速度可达多少？  
+How fast can J-Link RTT transfer data?
 
 ![输入图片说明](%E5%9B%BE%E7%89%87/Jlink%E9%80%9F%E5%BA%A6%E5%9B%BE.jpg)  
-从上图可见，RTT的传输速度可达1us传输82个字符，这速度还是相当可观的。  
 
-> 测试条件：STM32F407 Cortex-M4，时钟168M  
+In this test, RTT can transmit 82 characters in about 1 us. This is fast enough for many embedded logging and waveform use cases.
 
-还有一组RTT的传输速度曲线可供参考。  
+Test condition: STM32F407 Cortex-M4, 168 MHz clock.
+
+Another RTT speed comparison curve is shown below:
 
 ![输入图片说明](%E5%9B%BE%E7%89%87/J-link%E5%92%8C%E5%85%B6%E4%BB%96%E6%8E%A5%E5%8F%A3%E6%AF%94%E8%BE%83%E9%80%9F%E5%BA%A6%E5%9B%BE.png)  
 
-#### RTT工程移植  
+### Port RTT Into Your Project
 
+![Port RTT to Keil project](%E5%9B%BE%E7%89%87/%E7%A7%BB%E6%A4%8D%E5%88%B0%E8%87%AA%E5%B7%B1%E7%9A%84keil%E5%B7%A5%E7%A8%8Bimage.png)
+![Add header files](%E5%9B%BE%E7%89%87/%E5%A2%9E%E5%8A%A0%E5%A4%B4%E6%96%87%E4%BB%B6image.png)
+![Keil code configuration](%E5%9B%BE%E7%89%87/Keil%E5%B7%A5%E7%A8%8B%E4%BB%A3%E7%A0%81%E9%85%8D%E7%BD%AEimage.png)
 
+### RTT Up/Down Buffer Configuration
 
-![输入图片说明](%E5%9B%BE%E7%89%87/%E7%A7%BB%E6%A4%8D%E5%88%B0%E8%87%AA%E5%B7%B1%E7%9A%84keil%E5%B7%A5%E7%A8%8Bimage.png)  
-![输入图片说明](%E5%9B%BE%E7%89%87/%E5%A2%9E%E5%8A%A0%E5%A4%B4%E6%96%87%E4%BB%B6image.png)  
-![输入图片说明](%E5%9B%BE%E7%89%87/Keil%E5%B7%A5%E7%A8%8B%E4%BB%A3%E7%A0%81%E9%85%8D%E7%BD%AEimage.png)  
+Useful RTT API concepts:
 
-#### 上行/下行缓冲区配置
-> Note:  
->  如何手动配置RTT上行/下行缓冲区？  
->  **核心函数：**  
+```c
+SEGGER_RTT_ConfigUpBuffer(unsigned BufferIndex, const char* sName, void* pBuffer, unsigned BufferSize, unsigned Flags);
+SEGGER_RTT_ConfigDownBuffer(unsigned BufferIndex, const char* sName, void* pBuffer, unsigned BufferSize, unsigned Flags);
+unsigned SEGGER_RTT_Read(unsigned BufferIndex, void* pBuffer, unsigned BufferSize);
 ```
-SEGGER_RTT_ConfigUpBuffer(unsigned BufferIndex, const char* sName, void* pBuffer, unsigned BufferSize, unsigned Flags)  
-SEGGER_RTT_ConfigDownBuffer(unsigned BufferIndex, const char* sName, void* pBuffer, unsigned BufferSize, unsigned Flags)  
-```
-> **读取函数**
-```
-unsigned SEGGER_RTT_Read(unsigned BufferIndex, void* pBuffer, unsigned BufferSize)
-```
->  用途：用于创建自定义的上行（MCU到调试器）或下行（调试器到MCU）通道，替换默认的0号通道。  
->  **配置步骤：**  
->  定义缓冲区：声明静态字符数组作为数据缓冲区。  
->  调用配置函数：在初始化阶段配置缓冲区。  
->  **指定通道参数：**  
->  BufferIndex：通道索引（0为默认通道，1及以上为用户自定义通道）。  
->  sName：通道标识名。  
->  pBuffer：缓冲区地址。  
->  BufferSize：缓冲区大小。  
->  Mode：缓冲模式（如SEGGER_RTT_MODE_NO_BLOCK_SKIP非阻塞跳过模式）。  
->  **RTT缓冲区大小的根本限制：**  
->  <u>*RTT缓冲区直接占用MCU的RAM，调试器只是读取该内存区域。  
->  因此，缓冲区最大尺寸的硬性上限是您愿意且能够从MCU总RAM中划拨出的空间。*</u>  
->  MCU型号总RAM容量  
->  建议的RTT缓冲区大小  
->  STM32G473​ 128 KB SRAM  
->  可轻松配置 32KB 或 64KB  
->  STM32F407​ 192 KB RAM  
->  通常可用 64KB ~ 100KB  
->  STM32H743​ 512 KB DTCM RAM  
->  可配置高达几百KB  
->  **总结与使用建议**  
->  配置流程：先根据您的调试输出数据量需求。  
->  尺寸规划：在规划缓冲区大小时，必须首要考虑硬件限制，即根据您的MCU型号和应用程序已占用的RAM，评估剩余可用空间，并据此设置一个合理的缓冲区大小，避免导致系统内存不足。  
 
+These functions are used to create or replace RTT up buffers and down buffers.
 
+Common parameters:
 
-## 调试器
+- `BufferIndex`: RTT channel index. `0` is the default channel. `1` and above can be used for custom channels.
+- `sName`: channel name.
+- `pBuffer`: buffer address.
+- `BufferSize`: buffer size.
+- `Flags`: buffer mode, such as non-blocking skip mode.
 
-通用调试器内存采集说明
+RTT buffers are allocated from MCU RAM. The maximum buffer size depends on the target MCU RAM capacity and the RAM already used by your application.
 
-**通用调试器  包含：**  
+General suggestions:
 
-- ST-Link  
-- J-Link  
-- CMSIS-DAP  
-- FTDI 系列调试器  
-- Raspberry Pi GPIO 调试方式  
-- Bus Pirate  
-- JTAGkey / Amontec  
-- HLA 类适配器  
-各类芯片厂商或开发板自带的调试适配器  
+| MCU | RAM | Suggested RTT Buffer |
+| --- | --- | --- |
+| STM32G473 | 128 KB SRAM | 32 KB or 64 KB |
+| STM32F407 | 192 KB RAM | 64 KB to 100 KB |
+| STM32H743 | 512 KB DTCM RAM | Hundreds of KB if the project allows it |
 
-**通用调试器窗口可以直接读取芯片内存地址，并把读取到的数据绑定到图表通道。这个方式适合做变量观察、慢速趋势采集、状态量显示和简单波形验证。**
+Start with the amount of debug data you need, then choose a buffer size that leaves enough RAM for the application stack, heap, and global variables.
 
-需要注意：调试器读取的是“地址 + 数据类型”，上位机本身不知道单片机里的变量名。因此单片机程序里需要先定义好变量，再通过Keil、map文件或调试窗口获取变量地址。
+## Generic Debugger
 
-### STM32 测试结构体例子
+The Generic Debugger window can read target memory directly and bind the values to chart channels. This is useful for observing variables, structure members, status values, slow trend data, and simple waveform verification.
 
-可以在 STM32 工程中加入下面代码，例如放到 `main.c`，或单独放到 `debug_data.c/.h`。
+Supported common debugger categories include:
+
+- ST-Link
+- J-Link
+- CMSIS-DAP
+- FTDI-based debuggers
+- Raspberry Pi GPIO debugging methods
+- Bus Pirate
+- JTAGkey / Amontec
+- HLA-style adapters
+- Debug adapters from chip vendors or development boards
+
+The debugger reads by **address + data type**. The PC software does not know the variable names inside the MCU. You need to define variables in the firmware first, then obtain their addresses from Keil, a map file, or another debug view.
+
+### STM32 Test Structure Example
+
+You can add the following code to an STM32 project, for example in `main.c`, or split it into `debugger_data.c/.h`.
 
 ```c
 #include <stdint.h>
@@ -162,33 +156,33 @@ unsigned SEGGER_RTT_Read(unsigned BufferIndex, void* pBuffer, unsigned BufferSiz
 
 typedef enum
 {
-    DEBUG_STATE_IDLE = 0,
-    DEBUG_STATE_RUN  = 1,
-    DEBUG_STATE_ERR  = 2
-} DebugState_t;
+    DEBUGGER_STATE_IDLE = 0,
+    DEBUGGER_STATE_RUN  = 1,
+    DEBUGGER_STATE_ERR  = 2
+} DebuggerState_t;
 
 typedef struct
 {
-    int32_t      ch0_i32;     // 上位机类型：int32
-    uint32_t     ch1_u32;     // 上位机类型：uint32
-    float        ch2_float;   // 上位机类型：float
-    int16_t      ch3_i16;     // 上位机类型：int16
-    uint16_t     ch4_u16;     // 上位机类型：uint16
-    int8_t       ch5_i8;      // 上位机类型：int8
-    uint8_t      ch6_u8;      // 上位机类型：uint8
-    char         ch7_char;    // 上位机类型：int8 或 uint8
-    bool         ch8_bool;    // 上位机类型：uint8
-    DebugState_t ch9_state;   // 上位机类型：int32
+    int32_t       ch0_i32;     // PC type: int32
+    uint32_t      ch1_u32;     // PC type: uint32
+    float         ch2_float;   // PC type: float
+    int16_t       ch3_i16;     // PC type: int16
+    uint16_t      ch4_u16;     // PC type: uint16
+    int8_t        ch5_i8;      // PC type: int8
+    uint8_t       ch6_u8;      // PC type: uint8
+    char          ch7_char;    // PC type: int8 or uint8
+    bool          ch8_bool;    // PC type: uint8
+    DebuggerState_t ch9_state; // PC type: int32
 } DebuggerData_t;
 
 volatile DebuggerData_t g_debuggerData;
 ```
 
-`volatile` 建议保留。它告诉编译器：这个变量可能被外部调试器读取，不要随便优化掉。
+Keep `volatile`. It tells the compiler that the variable may be accessed externally and should not be optimized away casually.
 
-### 更新测试数据
+### Update Test Data
 
-可以写一个更新函数，让每个成员变量持续变化，方便上位机验证采集是否正常。
+Use a simple update function so each field changes continuously. This makes it easy to check whether the PC-side acquisition is working.
 
 ```c
 void DebuggerData_Update(void)
@@ -205,13 +199,13 @@ void DebuggerData_Update(void)
     g_debuggerData.ch6_u8    = (uint8_t)(counter % 255U);
     g_debuggerData.ch7_char  = (char)('A' + (counter % 26U));
     g_debuggerData.ch8_bool  = (counter & 1U) ? true : false;
-    g_debuggerData.ch9_state = (counter % 3U) == 0U ? DEBUG_STATE_IDLE :
-                              (counter % 3U) == 1U ? DEBUG_STATE_RUN :
-                                                     DEBUG_STATE_ERR;
+    g_debuggerData.ch9_state = (counter % 3U) == 0U ? DEBUGGER_STATE_IDLE :
+                              (counter % 3U) == 1U ? DEBUGGER_STATE_RUN :
+                                                     DEBUGGER_STATE_ERR;
 }
 ```
 
-在主循环或定时任务中调用：
+Call it from the main loop, a timer task, or an RTOS task:
 
 ```c
 while (1)
@@ -221,13 +215,11 @@ while (1)
 }
 ```
 
-如果没有使用 HAL，也可以放在自己的定时任务、RTOS任务或主循环里更新。
+### Get Variable Addresses
 
-### 获取变量地址
+Method 1: Use Keil MDK Watch.
 
-**方法一：Keil MDK 查看地址**
-
-编译后进入 Debug，打开 Watch 窗口，输入：
+After compilation, enter debug mode and add these expressions to Watch:
 
 ```c
 &g_debuggerData
@@ -236,103 +228,103 @@ while (1)
 &g_debuggerData.ch2_float
 ```
 
-Keil 会显示结构体和成员变量的实际地址。
+Keil will show the actual addresses of the structure and its members.
 
 ![输入图片说明](%E5%9B%BE%E7%89%87/STM32%20%E8%8E%B7%E5%8F%96%E9%80%9A%E9%81%93%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9C%B0%E5%9D%80.gif)
 
-**方法二：查看 map 文件**
+Method 2: Check the map file.
 
-编译后打开工程输出目录里的 `.map` 文件，搜索：
+After compilation, open the `.map` file in the output directory and search for:
 
 ```text
 g_debuggerData
 ```
 
-可以找到结构体起始地址。如果只拿到结构体起始地址，也可以按偏移计算每个成员地址。
+You can find the start address of the structure. If you only know the structure start address, calculate member addresses by offset, or check each member directly in Keil Watch.
 
-### 独立地址模式
+### Independent Address Mode
 
-混合类型结构体推荐使用“独立地址模式”。每个通道单独填写变量地址，最稳，也最容易排查。
+Independent address mode is recommended for structures that contain mixed data types. Each channel uses its own address and type. This is the most reliable and easiest mode to debug.
 
-假设查到：
-
-```text
-g_debuggerData 地址 = 0x20004410
-```
-
-常见 ARM 编译配置下，结构体成员通常如下排列：
-
-| 通道 | 成员 | 地址填写 | 类型 |
-|---|---|---|---|
-| 通道0 | ch0_i32 | 0x20004410 | int32 |
-| 通道1 | ch1_u32 | 0x20004414 | uint32 |
-| 通道2 | ch2_float | 0x20004418 | float |
-| 通道3 | ch3_i16 | 0x2000441C | int16 |
-| 通道4 | ch4_u16 | 0x2000441E | uint16 |
-| 通道5 | ch5_i8 | 0x20004420 | int8 |
-| 通道6 | ch6_u8 | 0x20004421 | uint8 |
-| 通道7 | ch7_char | 0x20004422 | int8 |
-| 通道8 | ch8_bool | 0x20004423 | uint8 |
-| 通道9 | ch9_state | 0x20004424 | int32 |
-
-不同编译器、不同结构体顺序可能产生不同对齐和填充。最可靠的方法是直接在 Keil Watch 里查看每个成员的地址。
-
-### 连续地址模式
-
-如果结构体成员是连续排列的，也可以用“连续地址模式”：
+Assume:
 
 ```text
-起始地址：g_debuggerData 的地址
+g_debuggerData address = 0x20004410
 ```
 
-然后按通道顺序选择类型：
+With a common ARM compiler layout, the members may be arranged like this:
+
+| Channel | Member | Address | Type |
+| --- | --- | --- | --- |
+| Channel 0 | ch0_i32 | 0x20004410 | int32 |
+| Channel 1 | ch1_u32 | 0x20004414 | uint32 |
+| Channel 2 | ch2_float | 0x20004418 | float |
+| Channel 3 | ch3_i16 | 0x2000441C | int16 |
+| Channel 4 | ch4_u16 | 0x2000441E | uint16 |
+| Channel 5 | ch5_i8 | 0x20004420 | int8 |
+| Channel 6 | ch6_u8 | 0x20004421 | uint8 |
+| Channel 7 | ch7_char | 0x20004422 | int8 |
+| Channel 8 | ch8_bool | 0x20004423 | uint8 |
+| Channel 9 | ch9_state | 0x20004424 | int32 |
+
+Different compilers, structure order, and alignment settings may add padding bytes. The most reliable method is to check each member address in Keil Watch.
+
+### Continuous Address Mode
+
+If structure members are laid out continuously, you can use continuous address mode:
 
 ```text
-通道0 int32
-通道1 uint32
-通道2 float
-通道3 int16
-通道4 uint16
-通道5 int8
-通道6 uint8
-通道7 int8
-通道8 uint8
-通道9 int32
+Start address: address of g_debuggerData
 ```
 
-但只要结构体中间出现编译器填充字节，连续地址模式就可能读错。混合类型结构体建议优先使用“独立地址模式”。
+Then select the channel types in order:
+
+```text
+Channel 0: int32
+Channel 1: uint32
+Channel 2: float
+Channel 3: int16
+Channel 4: uint16
+Channel 5: int8
+Channel 6: uint8
+Channel 7: int8
+Channel 8: uint8
+Channel 9: int32
+```
+
+If padding bytes exist inside the structure, continuous address mode may read the wrong values. For mixed-type structures, prefer independent address mode.
 
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E8%B0%83%E5%BC%8F%E5%99%A8%E7%BB%91%E5%AE%9A%E6%95%B0%E6%8D%AE%E9%80%9A%E9%81%93%E6%98%BE%E7%A4%BA%E5%9B%BE%E8%A1%A8%E6%95%B0%E6%8D%AE.gif)
 
 
-### 固定地址不变的做法
+### Keep The Address Fixed
 
-如果只是测试，直接使用全局变量 `g_debuggerData` 即可。每次编译后重新查看地址。
+For quick tests, a global variable such as `g_debuggerData` is enough. Check its address again after each build.
 
-如果希望地址长期固定，例如固定到：
+If you want the address to stay fixed for a long time, for example:
 
 ```text
 0x20007000
 ```
 
-不要只写：
+Do not only write:
 
 ```c
-#define DEBUG_DATA_ADDR 0x20007000UL
+#define DEBUGGER_DATA_ADDR 0x20007000UL
 ```
 
-这种写法只是强制往这个地址写，并没有告诉链接器这块 RAM 已经被占用，仍然可能和普通变量、堆、栈冲突。
+That only forces the program to write to that address. It does not tell the linker that the RAM area is occupied, so it may conflict with normal variables, heap, or stack.
 
-更稳的做法是：在 linker/scatter 文件里专门预留一小段 RAM，然后把调试变量放进去。
+A more reliable method is to reserve a small RAM region in the linker/scatter file and place the debugger variable there.
 
-Keil ARMClang 示例：
+Keil ARMClang example:
 
 ```c
 __attribute__((section(".debugger_data")))
 volatile DebuggerData_t g_debuggerData;
 ```
 
-Scatter 文件中预留一段 RAM，例如：
+Scatter file example:
 
 ```text
 RW_IRAM1 0x20000000 0x7000  {
@@ -344,481 +336,488 @@ RW_DEBUGGER_DATA 0x20007000 0x100  {
 }
 ```
 
-这样 `g_debuggerData` 会被放到 `0x20007000` 附近，上位机就可以长期填写这个地址。
+Then `g_debuggerData` will be placed near `0x20007000`, and the PC software can keep using that address.
 
-注意：`0x20007000` 不是所有 STM32 都通用，必须确认芯片 RAM 覆盖这个地址。
+Note: `0x20007000` is not universal for all STM32 chips. Always confirm that the target RAM actually covers this address.
 
-### 快速检查
+### Quick Check
 
-连接调试器后，可以先用“内存读取”读取结构体起始地址，例如：
+After connecting the debugger, first use Memory Read to read the structure start address, for example:
 
 ```text
-读取地址：0x20004410
-读取长度：32 字节
+Read address: 0x20004410
+Read length: 32 bytes
 ```
 
-如果能看到数据不断变化，再切到“图表采集”绑定通道。
+If the data changes continuously, switch to Chart Acquisition and bind the channels.
 
-如果读取失败，优先检查：
+If reading fails, check:
 
-1. 地址是否在芯片 RAM 范围内。
-2. 芯片系列是否选对，例如 STM32G431 选择 `stm32g4x.cfg`。
-3. 变量是否被定义成全局或静态变量。
-4. 是否加了 `volatile`。
-5. 程序是否正在运行并更新这个变量。
+1. Whether the address is inside the target RAM range.
+2. Whether the chip series is correct, for example STM32G431 should use `stm32g4x.cfg`.
+3. Whether the variable is global or static.
+4. Whether `volatile` is used.
+5. Whether the firmware is running and updating the variable.
 
-### 通用调试器和 J-Link RTT 的区别
+### Generic Debugger Vs J-Link RTT
 
-通用调试器和 J-Link RTT 都可以把单片机数据送到上位机图表，但它们的工作方式不同，适合的场景也不同。
+Both Generic Debugger and J-Link RTT can send MCU data to the PC-side charts, but their working methods and suitable scenarios are different.
 
-**通用调试器** 是上位机按地址主动读取芯片内存。用户只需要知道变量地址和变量类型，就可以把 RAM 中的变量绑定到图表通道。它适合观察全局变量、结构体成员、状态量、慢速趋势数据，以及不方便在下位机工程中加入通信代码的场景。
+**Generic Debugger** actively reads target memory by address. You only need to know the variable address and type, then bind RAM variables to chart channels. It is suitable for observing global variables, structure members, status values, slow trends, and cases where you do not want to add communication code to the firmware.
 
-使用通用调试器时，下位机不用主动发送数据；上位机会按设定周期读取指定地址。由于每次读取都需要通过调试接口访问目标芯片，速度通常不适合替代高速连续数据流。如果要观察 ADC 高速采样波形，建议降低采样期望，或者在下位机中先做缓存、抽样、统计后再读取。
+With Generic Debugger, the MCU does not actively send data. The PC reads specified addresses at the configured period. Because every read goes through the debug interface, it is not ideal as a replacement for high-speed continuous data streams. For high-speed ADC waveforms, lower the sampling expectation, buffer data on the MCU side, or read processed/downsampled data.
 
-**J-Link RTT** 是下位机通过 RTT 缓冲区主动输出数据，上位机读取 RTT 缓冲区。它更适合实时日志、高速连续数据、printf 调试，以及需要完整输出一串采样数据的场景。比如 ADC 以较高频率采样，并把数据按帧发送给上位机，RTT 通常比通用调试器按地址轮询更合适。
+**J-Link RTT** uses an RTT buffer in the MCU firmware. The MCU actively writes data to the RTT buffer, and the PC reads the RTT buffer. It is better for real-time logs, high-speed continuous data, `printf` debugging, and complete sampled data frames. If an ADC samples at a high rate and sends frames to the PC, RTT is usually more suitable than polling addresses through the Generic Debugger.
 
-简单选择建议：
+Simple selection guide:
 
-| 使用需求 | 建议方式 |
+| Requirement | Recommended Method |
 | --- | --- |
-| 查看某个变量、结构体成员、状态值 | 通用调试器 |
-| 把 RAM 中 1~10 个变量绑定到图表通道 | 通用调试器 |
-| 不想在下位机增加发送代码 | 通用调试器 |
-| 高速连续输出日志或波形数据 | J-Link RTT |
-| 需要 printf 风格调试输出 | J-Link RTT |
-| 需要下位机按固定采样率主动输出完整数据帧 | J-Link RTT |
+| View a variable, structure member, or status value | Generic Debugger |
+| Bind 1 to 10 RAM variables to chart channels | Generic Debugger |
+| Avoid adding sending code to firmware | Generic Debugger |
+| High-speed continuous log or waveform output | J-Link RTT |
+| `printf`-style debug output | J-Link RTT |
+| MCU actively outputs complete frames at a fixed sample rate | J-Link RTT |
 
-如果只是想快速看变量变化，用通用调试器更直接；如果要做高速实时数据流，优先使用 J-Link RTT。
+If you only want to quickly inspect variable changes, use Generic Debugger. If you need a high-speed real-time data stream, prefer J-Link RTT.
 
-## 网络会话使用说明
+## Network Sessions
 
-软件支持 **TCP客户端、TCP服务端、UDP** 三种网络会话。网络会话和串口、J-Link、调试器一样，都是独立会话窗口，可以同时打开多个窗口并行工作。每个网络会话都有独立的连接状态、接收区、发送区、发送历史、周期发送、编码设置和图表解析流程。
+The software supports three network session types: **TCP Client**, **TCP Server**, and **UDP**. Network sessions work like serial, J-Link, and debugger sessions: each session window has its own connection state, receive area, send area, send history, periodic sending settings, encoding settings, and chart parsing workflow.
 
-网络会话不仅可以用于普通文本/十六进制收发，也可以用于图表数据采集。只要接收到的数据符合图表帧格式，例如：
+Network sessions can be used for normal text/hex communication and for chart data acquisition. If received data follows the chart frame format, for example:
 
 ```text
 ch:1,2,3\n
 ```
 
-就可以直接显示到波形图、直方图或频谱图。
+it can be displayed directly in waveform, histogram, or spectrum charts.
 
-### 三种网络会话的区别
+### Network Session Types
 
-| 会话类型 | 工作方式 | 典型用途 |
+| Session Type | Behavior | Typical Use |
 | --- | --- | --- |
-| TCP客户端 | 主动连接一个TCP服务端 | 连接设备、连接本机服务、连接局域网服务端、测试网口转串口模块 |
-| TCP服务端 | 本机监听端口，等待客户端连接 | 模拟服务端、接收设备主动上报、让多个客户端接入测试 |
-| UDP | 无连接收发报文 | 设备发现、广播/单播短报文、轻量协议、允许少量丢包的实时数据 |
+| TCP Client | Actively connects to a TCP server | Connect to devices, local services, LAN servers, or Ethernet-to-serial modules |
+| TCP Server | Listens on a local port and waits for clients | Simulate a server, receive device reports, or allow multiple clients to connect |
+| UDP | Sends and receives connectionless packets | Device discovery, broadcast/unicast packets, lightweight protocols, or real-time data where occasional packet loss is acceptable |
 
-TCP是面向连接的协议。连接建立后，双方可以持续收发数据，并能感知连接断开。UDP是无连接协议，发送前不需要建立连接，速度轻、开销小，但不保证对方一定收到，也不保证顺序。
+TCP is connection-oriented. After a connection is established, both sides can send and receive continuously, and disconnection can be detected. UDP is connectionless. It does not establish a connection before sending, so it has lower overhead, but delivery and ordering are not guaranteed.
 
-### 地址和端口填写原则
+### Address And Port Rules
 
-- **`127.0.0.1`**：只表示本机回环地址，只能用于同一台电脑内部测试。
-- **`0.0.0.0`**：常用于本地绑定，表示交给系统选择网卡，或服务端监听所有本机网卡。
-- **局域网IP**：例如 `192.168.2.82`，用于同一局域网内其他电脑或设备连接本机。
-- **端口号**：范围是 `1~65535`。服务端监听端口必须明确填写；客户端本地端口通常可以保持 `0`，由系统自动分配。
-- **防火墙**：如果局域网设备连接不上本机服务端，优先检查 Windows 防火墙是否拦截该端口。
+- **`127.0.0.1`**: loopback address. Use it only for testing within the same computer.
+- **`0.0.0.0`**: commonly used for local binding. It lets the system choose an interface, or lets a server listen on all local interfaces.
+- **LAN IP**: for example `192.168.2.82`. Use it when another computer or device on the same LAN needs to connect to this computer.
+- **Port**: valid range is `1~65535`. A server listen port must be specified. A TCP client local port can usually stay `0`, so the system allocates it automatically.
+- **Firewall**: if a LAN device cannot connect to this computer, first check whether Windows Firewall blocks the selected port.
 
-普通TCP/UDP连接本机或局域网设备时，不需要走HTTP代理。软件会按普通Socket方式建立连接。
+Normal TCP/UDP connections to local or LAN devices do not need an HTTP proxy. The software uses regular socket connections.
 
-### TCP客户端
+### TCP Client
 
-TCP客户端用于主动连接一个已经存在的TCP服务端，例如本机测试服务、局域网设备、网口转串口模块、网络继电器、传感器网关或其他上位机模拟服务端。
+TCP Client actively connects to an existing TCP server. It is useful for testing a local service, LAN device, Ethernet-to-serial module, network relay, sensor gateway, or another PC-side TCP server.
 
-常用参数：
+Common settings:
 
-- **本地地址**：客户端绑定的本机网卡地址。一般保持 `0.0.0.0` 即可，由系统自动选择合适网卡。只有需要指定某张网卡时才填写具体本机IP。
-- **本地端口**：客户端本地端口。一般保持 `0` 即可，由系统自动分配。
-- **远端地址**：服务端的IP地址，例如本机测试用 `127.0.0.1`，局域网设备用 `192.168.x.x`。
-- **远端端口**：服务端监听端口，例如 `8080`。
-- **自动重连**：连接断开后按设定间隔自动重新连接，适合长时间连接设备、设备重启测试、网络波动测试。
+- **Local address**: the local network interface address to bind. In most cases, keep `0.0.0.0` and let the system choose the proper interface. Enter a specific local IP only when you must use one network adapter.
+- **Local port**: the local client port. In most cases, keep `0` and let the system allocate it automatically.
+- **Remote address**: the TCP server IP address. Use `127.0.0.1` for same-PC testing, or a LAN IP such as `192.168.x.x` for a LAN device.
+- **Remote port**: the server listen port, such as `8080`.
+- **Auto reconnect**: reconnect automatically after disconnection at the configured interval. This is useful for long-running device tests, device reboot tests, and unstable network tests.
 
-使用流程：
+Workflow:
 
-1. 确认目标TCP服务端已经打开并正在监听。
-2. 在TCP客户端中填写远端地址和远端端口。
-3. 本地地址一般保持 `0.0.0.0`，本地端口一般保持 `0`。
-4. 点击打开TCP客户端。
-5. 连接成功后，在发送区输入文本、十六进制数据或图表帧数据进行发送。
+1. Confirm that the target TCP server is open and listening.
+2. Enter the remote address and remote port in the TCP Client panel.
+3. Keep the local address as `0.0.0.0` and the local port as `0` in most cases.
+4. Open the TCP Client.
+5. After connection succeeds, send text, hex data, or chart frame data from the send area.
 
-本机测试时，可以先打开一个TCP服务端会话监听 `0.0.0.0:8080`，再打开TCP客户端会话连接 `127.0.0.1:8080`。如果要连接另一台电脑上的服务端，远端地址要填写对方电脑的局域网IP。
+For a local test, open a TCP Server session first and listen on `0.0.0.0:8080`, then open a TCP Client session and connect to `127.0.0.1:8080`. To connect to a server on another computer, enter that computer's LAN IP as the remote address.
 
-### TCP服务端
+### TCP Server
 
-TCP服务端用于在本机监听指定地址和端口，等待一个或多个TCP客户端连接。它适合模拟设备服务端、接收下位机网口数据，或和其他网络调试工具互联测试。
+TCP Server listens on a selected local address and port, then waits for one or more TCP clients to connect. It is useful for simulating a device server, receiving Ethernet data from a target device, or testing with other network tools.
 
-常用参数：
+Common settings:
 
-- **监听地址**：服务端绑定的本机地址。`0.0.0.0` 表示监听本机所有网卡；如果只想监听某一张网卡，可填写该网卡IP。
-- **监听端口**：服务端开放的端口，例如 `8080`。
-- **发送目标**：可以选择发送给所有客户端，或发送给指定客户端。适合一对多广播测试和单客户端定向回复。
-- **客户端列表**：显示已连接客户端的 `IP:端口`，可断开选中的客户端。
+- **Listen address**: the local address to bind. `0.0.0.0` listens on all local network interfaces. To listen on only one interface, enter that interface IP address.
+- **Listen port**: the port opened by the server, such as `8080`.
+- **Send target**: send to all clients or to one selected client. This supports one-to-many broadcast-style testing and directed replies.
+- **Client list**: shows connected clients as `IP:port`; the selected client can be disconnected manually.
 
-使用流程：
+Workflow:
 
-1. 监听地址一般填写 `0.0.0.0`。
-2. 监听端口填写一个未被占用的端口，例如 `8080`。
-3. 点击打开TCP服务端，状态会显示监听中和客户端数量。
-4. 客户端连接后，客户端列表会显示对方的 `IP:端口`。
-5. 发送数据时，可以选择发送给所有客户端，也可以选择某个客户端单独发送。
-6. 如需踢掉某个连接，选择客户端后点击断开指定客户端。
+1. Use `0.0.0.0` as the listen address in most cases.
+2. Enter a free listen port, such as `8080`.
+3. Open the TCP Server. The status will show that it is listening and how many clients are connected.
+4. After clients connect, the client list will show each peer as `IP:port`.
+5. When sending data, choose all clients or one selected client.
+6. To kick a client, select it and disconnect the selected client.
 
-如果局域网其他电脑或设备要连接本机TCP服务端，需要填写本机实际IP地址，例如 `192.168.2.82`，端口填写服务端监听端口。若连接失败，优先检查服务端是否正在监听、两台设备是否在同一网络、防火墙是否拦截该端口。
+If another PC or device on the LAN needs to connect to this server, use this computer's actual IP address, such as `192.168.2.82`, and the server listen port. If connection fails, check whether the server is listening, both devices are on the same network, and the firewall allows the port.
 
 ### UDP
 
-UDP是无连接通信，不需要像TCP一样建立连接。它适合短报文、广播类数据、设备发现、简单协议测试和对实时性要求较高但允许少量丢包的场景。
+UDP is connectionless. It does not establish a connection like TCP. It is suitable for short packets, broadcast-style data, device discovery, simple protocol tests, and real-time messages where occasional packet loss is acceptable.
 
-常用参数：
+Common settings:
 
-- **本地地址**：UDP绑定的本机网卡地址。一般使用 `0.0.0.0`。
-- **本地端口**：本机会接收数据的端口。
-- **远端地址/端口**：固定发送目标。
-- **发送模式**：
-  - **发送到固定目标**：始终发送到面板中填写的远端地址和端口。
-  - **回复最后接收方**：收到数据后，发送时自动回复最后一个发来数据的地址和端口。
+- **Local address**: the local network interface to bind. In most cases, use `0.0.0.0`.
+- **Local port**: the local port used to receive UDP packets.
+- **Remote address/port**: the fixed send target.
+- **Send mode**:
+  - **Send to fixed target**: always send to the remote address and port shown in the panel.
+  - **Reply to last sender**: after receiving a packet, send replies to the address and port of the last sender.
 
-使用流程：
+Workflow:
 
-1. 本地地址一般填写 `0.0.0.0`。
-2. 本地端口填写本机会接收UDP数据的端口，例如 `8081`。
-3. 如果选择“发送到固定目标”，需要填写远端地址和远端端口。
-4. 如果选择“回复最后接收方”，需要先接收到对方发来的UDP数据，软件才知道应该回复给谁。
-5. 打开UDP后即可收发数据。
+1. Use `0.0.0.0` as the local address in most cases.
+2. Enter the local port used to receive UDP packets, such as `8081`.
+3. If using **Send to fixed target**, enter the remote address and remote port.
+4. If using **Reply to last sender**, receive a packet first so the software knows which address and port to reply to.
+5. Open UDP and start sending or receiving.
 
-UDP没有连接状态，发送成功只表示数据已交给系统网络栈，不代表对方一定收到。如果需要可靠传输、顺序保证、断线感知或多客户端连接管理，请优先使用TCP。
+UDP has no connected state. A successful send only means the packet was handed to the system network stack; it does not guarantee the peer received it. If you need reliable delivery, ordered data, disconnection detection, or multi-client connection management, use TCP first.
 
-### 推荐测试流程
+### Recommended Tests
 
-**TCP本机互通测试**
+**TCP same-PC test**
 
-1. 新建一个TCP服务端会话，监听地址 `0.0.0.0`，监听端口 `8080`。
-2. 新建一个TCP客户端会话，远端地址 `127.0.0.1`，远端端口 `8080`。
-3. 打开TCP服务端，再打开TCP客户端。
-4. 在客户端发送 `hello`，服务端应能收到；在服务端发送 `world`，客户端应能收到。
-5. 发送 `ch:1,2,3\n`，可以验证图表解析是否正常。
+1. Create a TCP Server session. Listen on `0.0.0.0:8080`.
+2. Create a TCP Client session. Connect to `127.0.0.1:8080`.
+3. Open the TCP Server first, then open the TCP Client.
+4. Send `hello` from the client and confirm the server receives it. Send `world` from the server and confirm the client receives it.
+5. Send `ch:1,2,3\n` to verify chart parsing.
 
-**TCP局域网测试**
+**TCP LAN test**
 
-1. 在服务端电脑上通过 `ipconfig` 查看本机IPv4地址，例如 `192.168.2.82`。
-2. TCP服务端监听 `0.0.0.0:8080`。
-3. 另一台电脑或设备作为TCP客户端，连接 `192.168.2.82:8080`。
-4. 如果连接失败，检查两端是否在同一网段，端口是否被占用，防火墙是否放行。
+1. On the server computer, run `ipconfig` and find the IPv4 address, such as `192.168.2.82`.
+2. Let the TCP Server listen on `0.0.0.0:8080`.
+3. On another computer or device, connect the TCP Client to `192.168.2.82:8080`.
+4. If connection fails, check whether both devices are on the same network, whether the port is already occupied, and whether the firewall allows the port.
 
-**UDP双窗口测试**
+**UDP two-session test**
 
-1. 新建UDP会话A，本地端口设为 `8081`，远端地址 `127.0.0.1`，远端端口 `8082`。
-2. 新建UDP会话B，本地端口设为 `8082`，远端地址 `127.0.0.1`，远端端口 `8081`。
-3. 两个UDP会话都打开后，A发送的数据B能收到，B发送的数据A也能收到。
+1. Create UDP session A. Set local port to `8081`, remote address to `127.0.0.1`, and remote port to `8082`.
+2. Create UDP session B. Set local port to `8082`, remote address to `127.0.0.1`, and remote port to `8081`.
+3. Open both UDP sessions. Data sent by A should be received by B, and data sent by B should be received by A.
 
-### 常见问题
+### Common Problems
 
-| 现象 | 优先检查 |
+| Symptom | Check First |
 | --- | --- |
-| TCP客户端连接被拒绝 | 服务端是否已经打开；远端IP和端口是否正确；服务端是否监听在对应网卡 |
-| TCP客户端一直连不上 | 两端是否在同一网络；防火墙是否拦截；IP是否填成了 `127.0.0.1` 但实际想连另一台设备 |
-| TCP服务端监听失败 | 端口是否被其他程序占用；监听地址是否是本机真实存在的网卡地址 |
-| UDP收不到数据 | 本地端口是否填写正确；对方发送目标端口是否等于本地端口；防火墙是否拦截UDP |
-| 图表没有数据显示 | 数据是否符合 `ch:1,2,3\n` 格式；一帧末尾是否带换行符；是否打开了错误码/错误帧提示 |
+| TCP Client reports connection refused | Whether the server is open; whether remote IP and port are correct; whether the server listens on the expected interface |
+| TCP Client cannot connect | Whether both sides are on the same network; whether the firewall blocks the port; whether `127.0.0.1` was used when the target is actually another device |
+| TCP Server fails to listen | Whether the port is occupied; whether the listen address is a real local interface address |
+| UDP receives no data | Whether the local port is correct; whether the peer sends to that local port; whether the firewall blocks UDP |
+| No chart data appears | Whether the frame matches `ch:1,2,3\n`; whether each frame ends with newline; whether parse/error-frame hints are enabled |
 
+## Charts
 
-## 图表    
+### Chart Data Parsing And Custom Frame Prefix
 
-### 图表数据解析与自定义帧头
+Serial, J-Link RTT, TCP Client, TCP Server, and UDP sessions can parse received text frames into chart data. The Generic Debugger does not use this text-frame parser; it reads target variables directly by memory address and data type.
 
-串口、J-Link RTT、TCP客户端、TCP服务端、UDP 会话都可以把接收到的文本帧解析为图表数据。通用调试器不使用这套文本帧解析流程，它按“内存地址 + 数据类型”直接读取目标芯片变量。
+The related options are in the right-side **Parameter Settings** panel:
 
-相关选项位于右侧 **参数设置** 面板：
+- **Parse chart data**: when enabled, received data enters the chart parser and can update waveform, histogram, and spectrum charts. When disabled, received data is shown only as normal logs, which is better for high-speed plain log streams.
+- **Use frame prefix**: when enabled, every chart frame must start with a prefix. The default prefix is `ch:`. Keep this enabled when normal logs and chart frames are mixed in the same receive stream.
+- **Custom chart frame prefix**: accepts a 1 to 16 character prefix, such as `ch:`, `adc:`, or `imu:`. The prefix must not contain comma, carriage return, or newline characters. For high-speed streams, use a short ASCII prefix.
+- **Error code/error-frame hint**: when enabled, parse failures show the latest `PARSE 0x...` error in the status bar `Errors` field, making frame-format problems easier to locate.
 
-- **解析图表数据**：打开后，接收数据会进入图表解析流程，并尝试更新波形图、直方图和频谱图。关闭后，接收数据只作为普通日志显示，不再做图表解析，适合高速普通日志流。
-- **使用帧头**：打开后，每一帧图表数据必须以前缀开头，默认前缀为 `ch:`。如果接收流中混有普通日志，建议开启此项。
-- **自定义图表帧头**：可输入 1~16 个字符的帧头，例如 `ch:`、`adc:`、`imu:`。帧头不能包含英文逗号、回车或换行符。高速数据流建议使用短的纯 ASCII 帧头。
-- **错误码/错误帧提示**：打开后，解析失败时状态栏 `Errors` 会显示最新的 `PARSE 0x...` 解析错误，方便定位帧格式问题。
+#### Prefix Frame Format
 
-#### 带帧头格式
-
-默认推荐使用带帧头的数据帧：
+The recommended default format is:
 
 ```text
-帧头 + 通道1,通道2,通道3 + \n
+prefix + channel1,channel2,channel3 + \n
 ```
 
-默认帧头是 `ch:`，因此常见格式为：
+With the default `ch:` prefix:
 
 ```text
 ch:12.5,18,30\n
 ch:13.1,17.8,29.6\n
 ```
 
-如果把自定义帧头改成 `adc:`，下位机发送的数据也要同步改成：
+If the custom frame prefix is changed to `adc:`, the firmware or data source must send frames with the same prefix:
 
 ```text
 adc:12.5,18,30\n
 adc:13.1,17.8,29.6\n
 ```
 
-每一帧最多支持 10 个通道。通道之间使用英文逗号分隔，通道值必须是有效数字，支持整数、负数和小数。每一帧末尾必须带换行符 `\n`，否则软件无法可靠判断一帧数据是否结束。
+Each frame supports up to 10 channels. Channels are separated by commas. Each channel value must be a valid number; integers, negative values, and decimals are supported. Every frame must end with `\n`, otherwise the software cannot reliably determine where the frame ends.
 
-#### 简单 CSV 格式
+#### Simple CSV Format
 
-如果关闭 **使用帧头**，软件会按简单 CSV 格式解析：
+If **Use frame prefix** is disabled, the software parses simple CSV frames:
 
 ```text
-通道1,通道2,通道3\n
+channel1,channel2,channel3\n
 ```
 
-例如：
+Examples:
 
 ```text
 12.5,18,30\n
 13.1,17.8,29.6\n
 ```
 
-简单 CSV 适合数据源非常纯净、每一行都只包含图表数值的场景。如果接收区同时混有普通日志、调试文本或其他协议内容，建议继续使用帧头模式，避免把普通日志误判成图表帧。
-![输入图片说明](%E5%9B%BE%E7%89%87/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B8%A7%E5%A4%B4.gif)  
-#### 高速日志流建议
+Simple CSV is suitable when the data source is clean and every received line contains only chart values. If the receive stream also contains normal logs, debug text, or other protocol messages, keep prefix mode enabled to avoid treating normal logs as chart data.
 
-如果当前会话只用于查看普通日志，不需要更新图表，建议关闭 **解析图表数据**。这样软件不会再对每一行接收内容执行数值解析，能减少高速日志流下的额外处理开销。
+#### High-Speed Log Stream Suggestions
 
-如果需要高速图表采集，建议使用固定、简短、纯 ASCII 的帧头，例如 `ch:` 或 `adc:`，并让下位机始终按完整帧发送：
+If a session is used only for normal logs and does not need chart updates, disable **Parse chart data**. Then the software will not run numeric chart parsing on every received line, reducing extra processing cost for high-speed log streams.
+
+For high-speed chart acquisition, use a fixed, short, ASCII-only prefix such as `ch:` or `adc:`, and make the firmware always send complete frames:
 
 ```text
 ch:1,2,3\n
 ```
 
-不要把一帧数据拆成多次无换行发送。开启 **解析图表数据 + 错误码/错误帧提示** 后，如果缓冲区长时间没有等到换行符，并且内容看起来像图表帧，软件会提示缺少换行符，方便排查下位机发送格式。
+Do not split one frame into multiple sends without a newline. When **Parse chart data + Error code/error-frame hint** are enabled, if the buffer waits too long for a newline and the content looks like a chart frame, the software reports a missing-newline parse error to help locate firmware output problems.
 
-#### 配置保存
+#### Configuration Storage
 
-图表解析相关设置会保存到配置文件中，包括是否解析图表数据、是否使用帧头、自定义帧头内容、错误码/错误帧提示。串口、J-Link RTT、TCP客户端、TCP服务端、UDP 会话会分别保存自己的配置，互不影响。
+Chart parsing settings are saved in the configuration file, including whether chart parsing is enabled, whether a frame prefix is used, the custom prefix value, and whether parse error hints are enabled. Serial, J-Link RTT, TCP Client, TCP Server, and UDP sessions save their own settings independently.
 
-### 图表帧格式  
+### Chart Frame Format
 
-下面以默认帧头 `ch:` 为例说明常见发送格式。图表最多显示 10 个通道数据。  
-"ch:1,2,3,4,5,6,7,8,9,10\n"  
-数字1表示通道1的数据  
-数字2表示通道2的数据  
-数字3表示通道3的数据  
-数字4表示通道4的数据  
-数字5表示通道5的数据  
-数字6表示通道6的数据  
-数字7表示通道7的数据  
-数字8表示通道8的数据  
-数字9表示通道9的数据  
-数字10表示通道10的数据  
-一帧数据后面一定要加换行符‌，否则图表显示不出来。  
-例如显示通道1波形图：  
-"ch:65\n"  
-"ch:71\n"  
-"ch:80\n"  
+The following examples use the default `ch:` prefix. A chart frame supports up to 10 channels:
 
-```
-int buffer[3]={65,71,80};
-SEGGER_RTT_printf(0, "ch:%d\n",buffer[0]);  
-SEGGER_RTT_printf(0, "ch:%d\n",buffer[1]);  
-SEGGER_RTT_printf(0, "ch:%d\n",buffer[2]);  
+```text
+ch:1,2,3,4,5,6,7,8,9,10\n
 ```
 
+Each number corresponds to one channel:
 
-例如显示通道1和通道2波形图：  
-"ch:65,30\n"  
-"ch:60,40\n"  
-"ch:80,50\n"  
+- Number 1: channel 1 data.
+- Number 2: channel 2 data.
+- Number 3: channel 3 data.
+- Number 4: channel 4 data.
+- Number 5: channel 5 data.
+- Number 6: channel 6 data.
+- Number 7: channel 7 data.
+- Number 8: channel 8 data.
+- Number 9: channel 9 data.
+- Number 10: channel 10 data.
 
+Every frame must end with `\n`, otherwise the chart may not parse the data.
 
+Example: show one channel:
+
+```text
+ch:65\n
+ch:71\n
+ch:80\n
 ```
-int buffer1[3]={65,60,80};
-int buffer2[3]={30,40,50};
-SEGGER_RTT_printf(0, "ch:%d,%d\n",buffer1[0],buffer2[0]);  
-SEGGER_RTT_printf(0, "ch:%d,%d\n",buffer1[1],buffer2[1]);  
-SEGGER_RTT_printf(0, "ch:%d,%d\n",buffer1[2],buffer2[2]);  
+
+```c
+int buffer[3] = {65, 71, 80};
+SEGGER_RTT_printf(0, "ch:%d\n", buffer[0]);
+SEGGER_RTT_printf(0, "ch:%d\n", buffer[1]);
+SEGGER_RTT_printf(0, "ch:%d\n", buffer[2]);
 ```
-> Note:
->
-> 1. **RTT目前只支持0通道，不支持其他通道**。这意味着你只能调用SEGGER_RTT_printf(0, "test\n")发送数据，而不能调用SEGGER_RTT_printf(1,"test\n")去发送数据。  
 
-### 波形图
-波形图是一种以时间为横轴、数据值为纵轴，动态展示数据变化趋势的可视化图表。它能够清晰呈现信号在连续时间点上的波动情况，是观察数据实时变化、分析周期性或趋势性规律的理想工具。  在本软件中，波形图支持最多10个通道的数据并行显示。您可以通过右侧面板独立控制每个通道的颜色、线宽、散点显示及可见性。  图表会为每个通道实时计算并更新关键统计信息，包括最大值、最小值、平均值和标准差。标准差是衡量数据离散程度的核心指标，其值越小，表明该通道的数据越稳定，波动性越低。  
+Example: show channel 1 and channel 2:
 
-![输入图片说明](%E5%9B%BE%E7%89%87/%E6%B3%A2%E5%BD%A2%E5%9B%BE%E5%8A%A8%E5%9B%BE.gif)
+```text
+ch:65,30\n
+ch:60,40\n
+ch:80,50\n
+```
 
+```c
+int buffer1[3] = {65, 60, 80};
+int buffer2[3] = {30, 40, 50};
+SEGGER_RTT_printf(0, "ch:%d,%d\n", buffer1[0], buffer2[0]);
+SEGGER_RTT_printf(0, "ch:%d,%d\n", buffer1[1], buffer2[1]);
+SEGGER_RTT_printf(0, "ch:%d,%d\n", buffer1[2], buffer2[2]);
+```
 
+Note: this software currently uses RTT channel 0. Use `SEGGER_RTT_printf(0, "test\n")` to send data.
 
-#### 卡尺测量
+### Waveform Chart
 
-- 鼠标双击数据点可以使用数据测量卡尺功能，一组测量最多可以选中3个点，最多可以设置10组测量卡尺，右键弹出菜单可取消测量卡尺标签信息。  
-![输入图片说明](%E5%9B%BE%E7%89%87/%E6%B5%8B%E9%87%8F%E5%8D%A1%E5%B0%BA.png)
+The waveform chart displays changing data over time. It supports up to 10 channels, per-channel visibility, color, line width, scatter display, gain, and offset. It also calculates key statistics in real time.
 
-#### 数据框选
+![Waveform chart](%E5%9B%BE%E7%89%87/%E6%B3%A2%E5%BD%A2%E5%9B%BE%E5%8A%A8%E5%9B%BE.gif)
 
-可以使用鼠标框线指定数据统计数据信息，选择《数据框选》功能，鼠标移动到指定的数据区域，鼠标按住左键不放可对数据进行选中。  
-![输入图片说明](%E5%9B%BE%E7%89%87/%E6%95%B0%E6%8D%AE%E6%A1%86%E9%80%89.gif)
+#### Measurement Cursor
 
+Double-click a data point to use the measurement cursor. One measurement group can select up to 3 points, and up to 10 measurement groups can be created. Right-click to cancel measurement labels.
 
-### 直方图
+![Measurement cursor](%E5%9B%BE%E7%89%87/%E6%B5%8B%E9%87%8F%E5%8D%A1%E5%B0%BA.png)
 
-​	（柱状图也称直方图）是一种用于展示数据分布情况的可视化图表。它将数据范围划分为若干个连续的区间（称为“柱”或“箱”），并统计落入每个区间的数据点数量，最终以柱子的高度直观呈现。  在数据分析中，直方图常用于观察数据的概率分布、集中趋势和离散程度，是初步判断数据是否符合正态分布等重要统计特性的有力工具。  本软件的直方图功能支持多通道数据实时显示与分析。您可以使用右侧面板独立控制每个通道的颜色、柱子宽度和可见性。  图表会实时计算并显示各通道数据的统计信息，包括最大值、最小值、平均值和标准差。标准差是衡量数据波动大小的关键指标，其值越小，表明数据越集中在平均值附近。    
+#### Box Selection
 
-**使用建议：** 观察直方图的整体形状。若图形呈现中间高、两侧逐渐降低且大致对称的“钟形”曲线，则数据可能接近正态分布。  您可通过调整X轴范围、柱子宽度来聚焦于特定数据区间，从而更清晰地分析其分布特征。结合统计面板提供的具体数值（如平均值和标准差），可以更科学地评估数据的稳定性和一致性。    
+Use the box selection feature to select a data range and calculate statistics for that range.
 
-#### 核心工作原理  
-**参数配置：**  
-柱子个数：20  
-X轴统计范围：X轴下限 = 0，X轴上限 = 1000  
-柱子总数： 0到1000有20个柱子  
-数据处理逻辑：  
-第一帧数据到达："ch:10,32,18"  
-数值10：10 ÷ 5 = 2 → 第2个柱子计数加1  
-数值32：32 ÷ 5 = 6.4（向下取整为6）→ 第7个柱子计数加1  
-数值18：18 ÷ 5 = 3.6（向下取整为3）→ 第4个柱子计数加1  
-当前统计结果：柱子2=1，柱子7=1，柱子4=1  
-第二帧数据到达："ch:10,3,3"（假设采用滑动窗口机制，保留最近N个数据点）  
-数值10：10 ÷ 5 = 2 → 第2个柱子计数加1（累计：柱子2=2）  
-数值3：3 ÷ 5 = 0.6（向下取整为0）→ 第1个柱子计数加1  
-数值3：3 ÷ 5 = 0.6（向下取整为0）→ 第1个柱子计数再加1  
-如果数据窗口已满（上限缓冲），则移除最早的一帧数据"ch:10,32,18"：  
-移除数值10：第2个柱子计数减1（累计：柱子2=1）  
-移除数值32：第7个柱子计数减1（累计：柱子7=0）  
-移除数值18：第4个柱子计数减1（累计：柱子4=0）  
-最终统计结果：柱子1=2，柱子2=1，柱子4=0，柱子7=0  
+![Box selection](%E5%9B%BE%E7%89%87/%E6%95%B0%E6%8D%AE%E6%A1%86%E9%80%89.gif)
 
-![输入图片说明](%E5%9B%BE%E7%89%87/%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%8A%A8%E5%9B%BE.gif)
+### Histogram
 
-### 频谱图  
+The histogram shows data distribution. It divides the value range into continuous bins and counts how many samples fall into each bin. It is useful for observing probability distribution, concentration, dispersion, and stability.
 
-**1. 频谱图是什么？**  
-频谱图用于把时域信号转换到频域进行观察 **（傅里叶变换）** 。平时我们看到的波形图，是信号随时间变化的曲线，也就是“时域”。频谱图则是把这段信号分解成不同频率成分后，显示每个频率分量的强弱，也就是“频域”。
+Use the right-side channel panel to control color, bin width, and visibility. The software calculates maximum, minimum, average value, and standard deviation for each channel.
 
-简单理解：  
-波形图回答的是：信号什么时候变大、什么时候变小  
-频谱图回答的是：信号里主要包含哪些频率成分，它们各有多强  
-如果你想知道一个信号是不是有主频、谐波、杂波、噪声、周期性干扰，频谱图会比波形图更直观。  
+Suggested usage:
 
-**2. 频谱图有什么用**  
-频谱图主要适合这些场景：  
-查看信号主频  
-1、分析周期信号的频率成分  
-2、查看高频噪声、杂散分量  
-3、对比不同通道的频率分布  
-4、判断机械振动、电机转速、传感器周期输出是否正常  
-5、观察某个频率附近的能量是否异常增大  
-6、辅助定位串口/J-Link 采集数据中的周期干扰问题  
-**常见例子：**  
-一个正弦波在频谱图里通常会出现一个明显尖峰方波除了基频，还会出现一系列谐波噪声信号通常表现为大范围铺开的频谱底噪有固定干扰时，会在某几个频率位置出现稳定突起。  
-**采样率和 Δt 的作用**  
-频谱分析是否准确，和采样率密切相关。软件里通过输入每包数据时间间隔 Δt 来换算采样率。  
-Δt 越小，采样越快，采样率越高，可分析的最高频率越高，如果 Δt 设置不正确，会直接影响：  
+- Observe the overall shape of the histogram.
+- A bell-like shape may indicate an approximately normal distribution.
+- Adjust the X-axis range and bin width to focus on a specific value range.
+- Use average value and standard deviation to evaluate stability and consistency.
 
-1、频率轴显示是否正确  
-2、主频位置是否准确  
-3、整个频谱结果是否可信  
-**重点公式：**  
+#### Core Logic
 
-**1  /  Δt(ms)   =  信号采样率 Hz**  
+Example configuration:
 
-如果你的信号采样率是1000Hz，1/1000 = 0.001s，则 Δt = 1ms，Δt 就填 1。  
-如果你的信号采样率是20kHz，1/20000 = 0.00005s，则 Δt = 0.05ms，Δt 就填 0.05。  
+```text
+Bin width: 5
+X-axis lower limit: 0
+X-axis upper limit: 1000
+Total bins: 200
+```
 
+Input frame:
 
-![输入图片说明](%E5%9B%BE%E7%89%87/%E9%A2%91%E8%B0%B1%E5%9B%BE.gif)
+```text
+ch:10,32,18
+```
 
+Calculation:
 
-### 图表移出主窗口操作  
+- `10 / 5 = 2`: bin 2 count + 1.
+- `32 / 5 = 6.4`: bin 6 count + 1.
+- `18 / 5 = 3.6`: bin 3 count + 1.
 
+If the data buffer is full, the earliest frame is removed and the corresponding bin counts are decreased.
 
-鼠标左键按住窗口标签拖动出去就可以了。  
+![Histogram](%E5%9B%BE%E7%89%87/%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%8A%A8%E5%9B%BE.gif)
 
-![输入图片说明](%E5%9B%BE%E7%89%87/%E5%9B%BE%E8%A1%A8%E7%A7%BB%E5%8A%A8%E5%87%BA%E6%82%AC%E6%B5%AE%E7%AA%97%E5%8F%A3%E6%93%8D%E4%BD%9C.gif)
+### Spectrum Chart
 
-## 工具  
-### CRC校验计算  
+The spectrum chart converts a time-domain signal into the frequency domain for analysis. A waveform chart shows how a signal changes over time. A spectrum chart shows which frequency components are inside the signal and how strong they are.
+
+Common use cases:
+
+1. View the main frequency of a signal.
+2. Analyze periodic signal components.
+3. Observe high-frequency noise and spurious components.
+4. Compare frequency distribution across channels.
+5. Check mechanical vibration, motor speed, and periodic sensor output.
+6. Locate periodic interference in serial or J-Link acquired data.
+
+Sampling interval matters. The software uses the configured per-frame time interval `dt` to calculate the sample rate:
+
+```text
+sample rate (Hz) = 1 / dt(s)
+```
+
+Examples:
+
+- If the signal sample rate is 1000 Hz, then `dt = 1 ms`.
+- If the signal sample rate is 20 kHz, then `dt = 0.05 ms`.
+
+If `dt` is wrong, the frequency axis and peak positions will also be wrong.
+
+![Spectrum chart](%E5%9B%BE%E7%89%87/%E9%A2%91%E8%B0%B1%E5%9B%BE.gif)
+
+### Move Chart Out Of The Main Window
+
+Hold the left mouse button on a chart tab and drag it out to create a floating chart window.
+
+![Move chart out](%E5%9B%BE%E7%89%87/%E5%9B%BE%E8%A1%A8%E7%A7%BB%E5%8A%A8%E5%87%BA%E6%82%AC%E6%B5%AE%E7%AA%97%E5%8F%A3%E6%93%8D%E4%BD%9C.gif)
+
+## Tools
+
+### CRC Calculator
 
 ![输入图片说明](%E5%9B%BE%E7%89%87/CRC%E8%AE%A1%E7%AE%97%E5%99%A8.gif)
 
-### ASCLL表  
+### ASCII Table
 
 ![输入图片说明](%E5%9B%BE%E7%89%87/ASCLL%E7%A0%81.gif)
 
-### RGB颜色码互转  
+### RGB Color Converter
 
 ![输入图片说明](%E5%9B%BE%E7%89%87/RGB%E9%A2%9C%E8%89%B2%E7%A0%81%E4%BA%92%E6%8D%A2.gif)
 
-### 进制计算器  
+### Base Converter
 
 ![输入图片说明](%E5%9B%BE%E7%89%87/%E8%BF%9B%E5%88%B6%E8%AE%A1%E7%AE%97%E5%99%A8.gif)
 
-## 错误  
-### PARSE 0x0000 数据解析错误  
-**PARSE 表示数据解析错误**  
-**0x0000：十六进制错误码，用于标识具体错误类型**  
+## Errors
 
+### PARSE 0x0000 Data Parse Error
 
+`PARSE` means data parsing error. `0x0000` is a hexadecimal error code used to identify the specific error type.
 
-错误码 | 错误名称      |  中文说明                 |  常见原因
-----   | -----        | ------                   | ------- 
-0x0001 | 数据过短      | 接收到的数据长度不足       |数据被截断、传输不完整
-0x0002 | 缺少换行符    | 数据行末尾缺少换行符       |数据格式错误
-0x0004 | 无效帧头      | 数据帧头不是当前配置的图表帧头         |数据源错误、协议不匹配、下位机帧头和软件配置不一致
-0x0008 | 帧头后为空    | 当前图表帧头后没有通道数据        |数据格式错误
-0x0010 | 数据过长      | 数据部分超过200字符        |数据异常、缓冲区溢出
-0x0020 | 空通道数据     | 某个通道的数据为空        |数据格式错误
-0x0040 | 无效数字格式    | 通道数据不是有效浮点数    |数据包含非数字字符
-0x0080 | 转换失败       | 字符串到浮点数转换失败    |数据格式异常
-0x0100 | 数值超范围       | 数值超出合理范围        |传感器异常、数据错误
+| Error Code | Name | Description | Common Cause |
+| --- | --- | --- | --- |
+| 0x0001 | Data too short | The received data length is not enough | Data was truncated or transmission was incomplete |
+| 0x0002 | Missing newline | The data frame does not end with `\n` | Wrong frame format |
+| 0x0004 | Invalid frame prefix | The frame prefix does not match the current chart prefix setting | Wrong data source, protocol mismatch, or firmware prefix differs from the software setting |
+| 0x0008 | Empty data after prefix | No channel data after the current chart frame prefix | Wrong frame format |
+| 0x0010 | Data too long | Data part is longer than 200 characters | Abnormal data or buffer overflow |
+| 0x0020 | Empty channel data | A channel value is empty | Wrong frame format |
+| 0x0040 | Invalid number format | Channel data is not a valid floating-point number | Non-numeric characters |
+| 0x0080 | Conversion failed | String-to-number conversion failed | Abnormal data format |
+| 0x0100 | Value out of range | Numeric value is outside the allowed range | Sensor abnormality or bad data |
 
+### SEND 0x0000 Send Error
 
-### SEND 0x0000 发送数据错误  
-**SEND 表示发送数据错误**  
-**0x0000 十六进制错误码，用于标识具体错误类型**  
-错误码 | 错误名称          |  中文说明                 |  常见原因
-----   | -----            | ------                   | ------- 
-0x0001 | 发送数据错误      | 当使用 J-Link 发送数据时，如果下位机设备没有及时读取数据，可能导致发送错误。状态栏会显示已成功发送的字节数。       |上位机发送太快，下位机没有及时处理或没有处理，导致发送错误产生。
+`SEND` means send-data error. `0x0000` is a hexadecimal error code.
 
+| Error Code | Name | Description | Common Cause |
+| --- | --- | --- | --- |
+| 0x0001 | Send data error | When using J-Link to send data, the target may not read data in time. The status bar shows the successfully sent byte count. | The PC sends too fast, or the target does not process the received data in time |
 
+### Error Code Calculation
 
-###  错误码计算方法  
-**1. 单一错误码**  
-每个错误码对应一个固定的十六进制值，直接查看即可：  
-0x0001 = 数据过短错误  
-0x0004 = 无效前缀错误  
-0x0040 = 无效数字格式错误  
-**2. 组合错误码（同时发生多个错误）**  
-当多个错误同时发生时，错误码是各个错误码的相加结果：  
-**示例1：**  
-同时发生"数据过短"和"缺少换行符"  
-计算：0x0001 + 0x0002 = 0x0003  
-状态栏显示：PARSE 0x0003  
-**示例2：**  
-同时发生"无效前缀"和"无效数字格式"  
-计算：0x0004 + 0x0040 = 0x0044  
-状态栏显示：PARSE 0x0044  
-**示例3：**  
-同时发生"数据过短"、"缺少换行符"和"无效数字格式"  
-计算：0x0001 + 0x0002 + 0x0040 = 0x0043  
-状态栏显示：PARSE 0x0043  
+Single error code:
 
+```text
+0x0001 = data too short
+0x0004 = invalid prefix
+0x0040 = invalid number format
+```
 
+Combined error code:
 
+When multiple errors occur at the same time, the displayed code is the sum of all related error codes.
 
+Examples:
 
+```text
+0x0001 + 0x0002 = 0x0003
+0x0004 + 0x0040 = 0x0044
+0x0001 + 0x0002 + 0x0040 = 0x0043
+```
 
-## 使用技巧  
-### 软件操作界面 
-![输入图片说明](%E5%9B%BE%E7%89%87/%E6%89%8B%E5%8A%A8%E8%BF%9E%E6%8E%A5image.png)
-![输入图片说明](%E5%9B%BE%E7%89%87/%E7%82%B9%E5%87%BB%E6%8C%89%E9%92%AE%E7%BC%A9%E6%94%BEimage.png)
-![输入图片说明](%E5%9B%BE%E7%89%87/%E5%8F%AA%E6%98%BE%E7%A4%BA%E6%B3%A2%E5%BD%A2%E5%9B%BEimage.png)
-### 数据保存处理  
-![输入图片说明](%E5%9B%BE%E7%89%87/%E6%95%B0%E6%8D%AE%E4%BF%9D%E5%AD%98.gif)
+## Tips
 
-**使用WPS把无效字符数据分割出来保存纯数据**  
+### Software Operation
 
-![输入图片说明](%E5%9B%BE%E7%89%87/WPS%E6%95%B0%E6%8D%AE%E5%88%86%E5%89%B2%E4%BF%9D%E5%AD%98.gif)
-## 参与贡献
+![Manual connection](%E5%9B%BE%E7%89%87/%E6%89%8B%E5%8A%A8%E8%BF%9E%E6%8E%A5image.png)
+![Button zoom](%E5%9B%BE%E7%89%87/%E7%82%B9%E5%87%BB%E6%8C%89%E9%92%AE%E7%BC%A9%E6%94%BEimage.png)
+![Waveform only](%E5%9B%BE%E7%89%87/%E5%8F%AA%E6%98%BE%E7%A4%BA%E6%B3%A2%E5%BD%A2%E5%9B%BEimage.png)
 
-**@多多盒子工作室**
+### Data Save And Processing
 
+![Save data](%E5%9B%BE%E7%89%87/%E6%95%B0%E6%8D%AE%E4%BF%9D%E5%AD%98.gif)
 
-## 获取最新版本
-[仓库网址](http://gitee.com/momingchuan/duo-duo-box)
-[官方网址](http://www.duoduodianzi.top)
+Use WPS or other spreadsheet tools to split invalid characters and save pure numeric data.
+
+![WPS data split](%E5%9B%BE%E7%89%87/WPS%E6%95%B0%E6%8D%AE%E5%88%86%E5%89%B2%E4%BF%9D%E5%AD%98.gif)
+
+## Contribution
+
+**DuoDuo Box Studio**
+
+## Get The Latest Version
+
+Website: https://gitee.com/momingchuan/duo-duo-box
