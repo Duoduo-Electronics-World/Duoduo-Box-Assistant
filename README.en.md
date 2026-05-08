@@ -1,4 +1,4 @@
-# DuoDuo Box Assistant - V 1.2.2
+# DuoDuo Box Assistant - V 1.2.6
 
 - **If this project is useful to you, please give it a star.**
 - **The project will continue to be updated. Engineers are welcome to report bugs and suggestions in Gitee Issues.**
@@ -6,44 +6,59 @@
 
 Update notes:
 
-1. Added the Generic Debugger window. It can read target RAM through a debugger and bind memory values to chart channels.
-2. Optimized the data acquisition workflow for waveform charts, histograms, spectrum charts, and related views.
-3. Fixed known bugs.
+1. Added TCP Client sessions.
+2. Added TCP Server sessions.
+3. Added UDP sessions.
+4. Fixed known bugs.
 
 ## Introduction
 
-DuoDuo Box Assistant is a multi-function embedded debugging tool. It supports serial debugging, J-Link RTT, generic debugger memory reading, real-time charts, common encoding tools, and data export.
+DuoDuo Box Assistant is a multi-function embedded debugging tool. It supports serial debugging, J-Link RTT, generic debugger memory reading, TCP/UDP network debugging, real-time charts, common encoding tools, and data export.
 
 Feature overview:
 
-### Data Analysis And Visualization
+### Real-Time Charts And Data Analysis
 
-- **10-channel real-time waveform display**: dynamic zooming and dragging.
-- **Custom buffer management**: configurable chart buffer size.
-- **Real-time statistics**: maximum, minimum, average value, and standard deviation.
-- **Per-channel gain control**: independent gain and offset adjustment for every channel.
+- **10-channel real-time chart display**: waveform, histogram, and spectrum views for sensor data, control values, status values, and debug logs.
+- **Chart interaction**: zoom, drag, auto-follow, pause drawing, clear data, and box selection.
+- **Per-channel configuration**: independent channel name, color, visibility, gain, offset, line width, and point size.
+- **Statistics**: real-time maximum, minimum, average value, and standard deviation.
+- **Configurable chart buffer**: balance long-term observation with memory usage.
+
+### Chart Parsing And High-Speed Logs
+
+- **Custom chart frame prefix**: serial, J-Link RTT, TCP Client, TCP Server, and UDP sessions share the same chart-frame parser. The default prefix is `ch:`, and short prefixes such as `adc:` or `imu:` are also supported.
+- **Simple CSV mode**: disable frame-prefix parsing to parse frames such as `1,2,3\n` directly.
+- **Parsing switch**: disable chart parsing for high-speed plain log streams to reduce unnecessary parsing overhead.
+- **Error-frame hints**: optional `PARSE 0x...` error codes help locate prefix mismatch, missing newline, invalid channel data, and other frame-format problems.
 
 ### Multi-Protocol Device Support
 
-- **Serial debugging**: baud rate, data bits, parity, stop bits, flow control, and other parameters.
-- **J-Link RTT**: real-time data transmission through SEGGER RTT.
-- **Generic Debugger**: supports common debuggers such as ST-Link, J-Link, CMSIS-DAP, and compatible adapters for reading target memory.
-- **Memory-to-chart acquisition**: bind RAM variables directly to waveform, histogram, or spectrum channels.
-- **Multiple windows**: open multiple serial, J-Link, and debugger windows at the same time.
-- **Independent device sessions**: each window works independently.
+- **Serial debugging**: baud rate, data bits, parity, stop bits, flow control, text/hex send and receive, and selectable text encodings.
+- **J-Link RTT**: high-speed embedded logs and chart data through RTT.
+- **Generic Debugger**: read target memory through common debuggers such as ST-Link, J-Link, and CMSIS-DAP, then bind variables to chart channels.
+- **TCP Client**: connect to a local, LAN, or remote TCP server, with local address/port binding and auto reconnect.
+- **TCP Server**: listen on a selected address and port, show client count, accept multiple clients, send to all or a selected client, and disconnect a selected client.
+- **UDP**: send to a fixed target or the last sender, suitable for connectionless packets, device discovery, broadcast/unicast testing, and lightweight protocol debugging.
+
+### Independent Multi-Window Sessions
+
+- **Parallel sessions**: open multiple serial, J-Link, debugger, TCP Client, TCP Server, and UDP windows at the same time.
+- **Independent state**: each session has its own connection, receive/send area, counters, chart parser, and periodic sender.
+- **Independent configuration**: chart parsing, frame prefix, error-frame hints, send cycle, and repeat count are saved by session type to avoid configuration leakage between sessions.
 
 ### Internationalization And Encoding
 
-- **Chinese/English UI**: switch languages in the software.
+- **Chinese/English UI**: switch languages without restarting the workflow.
 - **Multiple encodings**: UTF-8, GBK, ASCII, and other common text encodings.
-- **Encoding conversion**: receive and send data with selectable encodings.
+- **Send/receive helpers**: text, hex, append newline, send history, file sending, and common utility tools.
 
 ### Efficient Data Processing
 
-- **Memory management**: automatic cleanup to avoid excessive memory usage.
-- **Data export**: TXT, CSV, and other formats.
-- **Send history**: keep and quickly reuse sent commands.
-- **Periodic sending**: configurable loop sending.
+- **Large-stream receive optimization**: receive logs and chart buffers are managed separately to reduce UI pressure during high-speed streams.
+- **Periodic sending**: configurable send interval and repeat count for command polling, stress testing, and protocol validation.
+- **Data export**: save receive logs and export chart data for later analysis.
+- **Clear error separation**: network socket messages are written to the log area, while chart parsing errors remain in the status bar for easier diagnosis.
 
 ### Main Window
 
@@ -83,7 +98,7 @@ Another RTT speed comparison curve is shown below:
 
 ### RTT Up/Down Buffer Configuration
 
-Useful SEGGER RTT APIs:
+Useful RTT API concepts:
 
 ```c
 SEGGER_RTT_ConfigUpBuffer(unsigned BufferIndex, const char* sName, void* pBuffer, unsigned BufferSize, unsigned Flags);
@@ -367,11 +382,211 @@ Simple selection guide:
 
 If you only want to quickly inspect variable changes, use Generic Debugger. If you need a high-speed real-time data stream, prefer J-Link RTT.
 
+## Network Sessions
+
+The software supports three network session types: **TCP Client**, **TCP Server**, and **UDP**. Network sessions work like serial, J-Link, and debugger sessions: each session window has its own connection state, receive area, send area, send history, periodic sending settings, encoding settings, and chart parsing workflow.
+
+Network sessions can be used for normal text/hex communication and for chart data acquisition. If received data follows the chart frame format, for example:
+
+```text
+ch:1,2,3\n
+```
+
+it can be displayed directly in waveform, histogram, or spectrum charts.
+
+### Network Session Types
+
+| Session Type | Behavior | Typical Use |
+| --- | --- | --- |
+| TCP Client | Actively connects to a TCP server | Connect to devices, local services, LAN servers, or Ethernet-to-serial modules |
+| TCP Server | Listens on a local port and waits for clients | Simulate a server, receive device reports, or allow multiple clients to connect |
+| UDP | Sends and receives connectionless packets | Device discovery, broadcast/unicast packets, lightweight protocols, or real-time data where occasional packet loss is acceptable |
+
+TCP is connection-oriented. After a connection is established, both sides can send and receive continuously, and disconnection can be detected. UDP is connectionless. It does not establish a connection before sending, so it has lower overhead, but delivery and ordering are not guaranteed.
+
+### Address And Port Rules
+
+- **`127.0.0.1`**: loopback address. Use it only for testing within the same computer.
+- **`0.0.0.0`**: commonly used for local binding. It lets the system choose an interface, or lets a server listen on all local interfaces.
+- **LAN IP**: for example `192.168.2.82`. Use it when another computer or device on the same LAN needs to connect to this computer.
+- **Port**: valid range is `1~65535`. A server listen port must be specified. A TCP client local port can usually stay `0`, so the system allocates it automatically.
+- **Firewall**: if a LAN device cannot connect to this computer, first check whether Windows Firewall blocks the selected port.
+
+Normal TCP/UDP connections to local or LAN devices do not need an HTTP proxy. The software uses regular socket connections.
+
+### TCP Client
+
+TCP Client actively connects to an existing TCP server. It is useful for testing a local service, LAN device, Ethernet-to-serial module, network relay, sensor gateway, or another PC-side TCP server.
+
+Common settings:
+
+- **Local address**: the local network interface address to bind. In most cases, keep `0.0.0.0` and let the system choose the proper interface. Enter a specific local IP only when you must use one network adapter.
+- **Local port**: the local client port. In most cases, keep `0` and let the system allocate it automatically.
+- **Remote address**: the TCP server IP address. Use `127.0.0.1` for same-PC testing, or a LAN IP such as `192.168.x.x` for a LAN device.
+- **Remote port**: the server listen port, such as `8080`.
+- **Auto reconnect**: reconnect automatically after disconnection at the configured interval. This is useful for long-running device tests, device reboot tests, and unstable network tests.
+
+Workflow:
+
+1. Confirm that the target TCP server is open and listening.
+2. Enter the remote address and remote port in the TCP Client panel.
+3. Keep the local address as `0.0.0.0` and the local port as `0` in most cases.
+4. Open the TCP Client.
+5. After connection succeeds, send text, hex data, or chart frame data from the send area.
+
+For a local test, open a TCP Server session first and listen on `0.0.0.0:8080`, then open a TCP Client session and connect to `127.0.0.1:8080`. To connect to a server on another computer, enter that computer's LAN IP as the remote address.
+
+### TCP Server
+
+TCP Server listens on a selected local address and port, then waits for one or more TCP clients to connect. It is useful for simulating a device server, receiving Ethernet data from a target device, or testing with other network tools.
+
+Common settings:
+
+- **Listen address**: the local address to bind. `0.0.0.0` listens on all local network interfaces. To listen on only one interface, enter that interface IP address.
+- **Listen port**: the port opened by the server, such as `8080`.
+- **Send target**: send to all clients or to one selected client. This supports one-to-many broadcast-style testing and directed replies.
+- **Client list**: shows connected clients as `IP:port`; the selected client can be disconnected manually.
+
+Workflow:
+
+1. Use `0.0.0.0` as the listen address in most cases.
+2. Enter a free listen port, such as `8080`.
+3. Open the TCP Server. The status will show that it is listening and how many clients are connected.
+4. After clients connect, the client list will show each peer as `IP:port`.
+5. When sending data, choose all clients or one selected client.
+6. To kick a client, select it and disconnect the selected client.
+
+If another PC or device on the LAN needs to connect to this server, use this computer's actual IP address, such as `192.168.2.82`, and the server listen port. If connection fails, check whether the server is listening, both devices are on the same network, and the firewall allows the port.
+
+### UDP
+
+UDP is connectionless. It does not establish a connection like TCP. It is suitable for short packets, broadcast-style data, device discovery, simple protocol tests, and real-time messages where occasional packet loss is acceptable.
+
+Common settings:
+
+- **Local address**: the local network interface to bind. In most cases, use `0.0.0.0`.
+- **Local port**: the local port used to receive UDP packets.
+- **Remote address/port**: the fixed send target.
+- **Send mode**:
+  - **Send to fixed target**: always send to the remote address and port shown in the panel.
+  - **Reply to last sender**: after receiving a packet, send replies to the address and port of the last sender.
+
+Workflow:
+
+1. Use `0.0.0.0` as the local address in most cases.
+2. Enter the local port used to receive UDP packets, such as `8081`.
+3. If using **Send to fixed target**, enter the remote address and remote port.
+4. If using **Reply to last sender**, receive a packet first so the software knows which address and port to reply to.
+5. Open UDP and start sending or receiving.
+
+UDP has no connected state. A successful send only means the packet was handed to the system network stack; it does not guarantee the peer received it. If you need reliable delivery, ordered data, disconnection detection, or multi-client connection management, use TCP first.
+
+### Recommended Tests
+
+**TCP same-PC test**
+
+1. Create a TCP Server session. Listen on `0.0.0.0:8080`.
+2. Create a TCP Client session. Connect to `127.0.0.1:8080`.
+3. Open the TCP Server first, then open the TCP Client.
+4. Send `hello` from the client and confirm the server receives it. Send `world` from the server and confirm the client receives it.
+5. Send `ch:1,2,3\n` to verify chart parsing.
+
+**TCP LAN test**
+
+1. On the server computer, run `ipconfig` and find the IPv4 address, such as `192.168.2.82`.
+2. Let the TCP Server listen on `0.0.0.0:8080`.
+3. On another computer or device, connect the TCP Client to `192.168.2.82:8080`.
+4. If connection fails, check whether both devices are on the same network, whether the port is already occupied, and whether the firewall allows the port.
+
+**UDP two-session test**
+
+1. Create UDP session A. Set local port to `8081`, remote address to `127.0.0.1`, and remote port to `8082`.
+2. Create UDP session B. Set local port to `8082`, remote address to `127.0.0.1`, and remote port to `8081`.
+3. Open both UDP sessions. Data sent by A should be received by B, and data sent by B should be received by A.
+
+### Common Problems
+
+| Symptom | Check First |
+| --- | --- |
+| TCP Client reports connection refused | Whether the server is open; whether remote IP and port are correct; whether the server listens on the expected interface |
+| TCP Client cannot connect | Whether both sides are on the same network; whether the firewall blocks the port; whether `127.0.0.1` was used when the target is actually another device |
+| TCP Server fails to listen | Whether the port is occupied; whether the listen address is a real local interface address |
+| UDP receives no data | Whether the local port is correct; whether the peer sends to that local port; whether the firewall blocks UDP |
+| No chart data appears | Whether the frame matches `ch:1,2,3\n`; whether each frame ends with newline; whether parse/error-frame hints are enabled |
+
 ## Charts
+
+### Chart Data Parsing And Custom Frame Prefix
+
+Serial, J-Link RTT, TCP Client, TCP Server, and UDP sessions can parse received text frames into chart data. The Generic Debugger does not use this text-frame parser; it reads target variables directly by memory address and data type.
+
+The related options are in the right-side **Parameter Settings** panel:
+
+- **Parse chart data**: when enabled, received data enters the chart parser and can update waveform, histogram, and spectrum charts. When disabled, received data is shown only as normal logs, which is better for high-speed plain log streams.
+- **Use frame prefix**: when enabled, every chart frame must start with a prefix. The default prefix is `ch:`. Keep this enabled when normal logs and chart frames are mixed in the same receive stream.
+- **Custom chart frame prefix**: accepts a 1 to 16 character prefix, such as `ch:`, `adc:`, or `imu:`. The prefix must not contain comma, carriage return, or newline characters. For high-speed streams, use a short ASCII prefix.
+- **Error code/error-frame hint**: when enabled, parse failures show the latest `PARSE 0x...` error in the status bar `Errors` field, making frame-format problems easier to locate.
+
+#### Prefix Frame Format
+
+The recommended default format is:
+
+```text
+prefix + channel1,channel2,channel3 + \n
+```
+
+With the default `ch:` prefix:
+
+```text
+ch:12.5,18,30\n
+ch:13.1,17.8,29.6\n
+```
+
+If the custom frame prefix is changed to `adc:`, the firmware or data source must send frames with the same prefix:
+
+```text
+adc:12.5,18,30\n
+adc:13.1,17.8,29.6\n
+```
+
+Each frame supports up to 10 channels. Channels are separated by commas. Each channel value must be a valid number; integers, negative values, and decimals are supported. Every frame must end with `\n`, otherwise the software cannot reliably determine where the frame ends.
+
+#### Simple CSV Format
+
+If **Use frame prefix** is disabled, the software parses simple CSV frames:
+
+```text
+channel1,channel2,channel3\n
+```
+
+Examples:
+
+```text
+12.5,18,30\n
+13.1,17.8,29.6\n
+```
+
+Simple CSV is suitable when the data source is clean and every received line contains only chart values. If the receive stream also contains normal logs, debug text, or other protocol messages, keep prefix mode enabled to avoid treating normal logs as chart data.
+
+#### High-Speed Log Stream Suggestions
+
+If a session is used only for normal logs and does not need chart updates, disable **Parse chart data**. Then the software will not run numeric chart parsing on every received line, reducing extra processing cost for high-speed log streams.
+
+For high-speed chart acquisition, use a fixed, short, ASCII-only prefix such as `ch:` or `adc:`, and make the firmware always send complete frames:
+
+```text
+ch:1,2,3\n
+```
+
+Do not split one frame into multiple sends without a newline. When **Parse chart data + Error code/error-frame hint** are enabled, if the buffer waits too long for a newline and the content looks like a chart frame, the software reports a missing-newline parse error to help locate firmware output problems.
+
+#### Configuration Storage
+
+Chart parsing settings are saved in the configuration file, including whether chart parsing is enabled, whether a frame prefix is used, the custom prefix value, and whether parse error hints are enabled. Serial, J-Link RTT, TCP Client, TCP Server, and UDP sessions save their own settings independently.
 
 ### Chart Frame Format
 
-The waveform chart supports up to 10 channels. The recommended frame format is:
+The following examples use the default `ch:` prefix. A chart frame supports up to 10 channels:
 
 ```text
 ch:1,2,3,4,5,6,7,8,9,10\n
@@ -423,7 +638,7 @@ SEGGER_RTT_printf(0, "ch:%d,%d\n", buffer1[1], buffer2[1]);
 SEGGER_RTT_printf(0, "ch:%d,%d\n", buffer1[2], buffer2[2]);
 ```
 
-Note: RTT currently uses channel 0 for this software. Use `SEGGER_RTT_printf(0, "test\n")` to send data.
+Note: this software currently uses RTT channel 0. Use `SEGGER_RTT_printf(0, "test\n")` to send data.
 
 ### Waveform Chart
 
@@ -545,8 +760,8 @@ Hold the left mouse button on a chart tab and drag it out to create a floating c
 | --- | --- | --- | --- |
 | 0x0001 | Data too short | The received data length is not enough | Data was truncated or transmission was incomplete |
 | 0x0002 | Missing newline | The data frame does not end with `\n` | Wrong frame format |
-| 0x0004 | Invalid prefix | The prefix is not `ch:` | Wrong data source or protocol mismatch |
-| 0x0008 | Empty data after prefix | No data after `ch:` | Wrong frame format |
+| 0x0004 | Invalid frame prefix | The frame prefix does not match the current chart prefix setting | Wrong data source, protocol mismatch, or firmware prefix differs from the software setting |
+| 0x0008 | Empty data after prefix | No channel data after the current chart frame prefix | Wrong frame format |
 | 0x0010 | Data too long | Data part is longer than 200 characters | Abnormal data or buffer overflow |
 | 0x0020 | Empty channel data | A channel value is empty | Wrong frame format |
 | 0x0040 | Invalid number format | Channel data is not a valid floating-point number | Non-numeric characters |
